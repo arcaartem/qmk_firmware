@@ -7,3 +7,4 @@ LTO_ENABLE          = yes
 TAP_DANCE_ENABLE    = yes
 RAW_ENABLE          = yes
 CONSOLE_ENABLE      = no
+DEBOUNCE_TYPE       = sym_defer_pk
