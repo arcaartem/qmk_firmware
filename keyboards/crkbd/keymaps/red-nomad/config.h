@@ -15,8 +15,6 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
-
 #pragma once
 
 //#define USE_MATRIX_I2C
@@ -114,4 +112,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     #define DEBUG_MATRIX_SCAN_RATE
 #endif
 
+#define OLED_DISABLE_TIMEOUT
 #define OLED_FONT_H "keyboards/crkbd/lib/customfont.c"
