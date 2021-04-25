@@ -25,6 +25,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define L3 3
 #define L4 4
 
+#define OLED_USER_TIMEOUT 60000
+
 uint8_t hid_buffers[2][32] = { 0 };
 uint8_t hid_buffer_lengths[2] = { 0 };
 
@@ -124,16 +126,18 @@ void keyboard_post_init_user(void) {
 #endif
 
 void raw_hid_receive(uint8_t *data, uint8_t length) {
-    uint8_t buffer_select = data[0];
-    uint8_t data_length = data[1];
-    dprintf("raw_hid_receive - buffer_select: %d, data_lenght: %d, length: %d\n", buffer_select, data_length, length);
-    if (buffer_select > 1 || data_length > 29) {
-        return;
-    }
+    if (is_oled_on()) {
+        uint8_t buffer_select = data[0];
+        uint8_t data_length = data[1];
+        dprintf("raw_hid_receive - buffer_select: %d, data_lenght: %d, length: %d\n", buffer_select, data_length, length);
+        if (buffer_select > 1 || data_length > 29) {
+            return;
+        }
 
-    hid_buffer_lengths[buffer_select] = data_length;
-    for (uint8_t i=0; i<data_length && i<30; i++) {
-        hid_buffers[buffer_select][i] = data[i+2];
+        hid_buffer_lengths[buffer_select] = data_length;
+        for (uint8_t i=0; i<data_length && i<30; i++) {
+            hid_buffers[buffer_select][i] = data[i+2];
+        }
     }
 }
 
@@ -230,6 +234,19 @@ void oled_render_logo(void) {
 }
 
 void oled_task_user(void) {
+#    ifdef ENCODER_ENABLE
+    if (last_matrix_activity_elapsed() > OLED_USER_TIMEOUT && last_encoder_activity_elapsed() > OLED_USER_TIMEOUT) {
+#    else
+    if (last_matrix_activity_elapsed() > OLED_USER_TIMEOUT) {
+#    endif
+        if (is_oled_on()) {
+            oled_off();
+        }
+        return;
+    } else if (!is_oled_on()) {
+        oled_on();
+    }
+
     if (is_master) {
         oled_render_layer_state();
         oled_render_keylog();
