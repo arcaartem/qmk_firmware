@@ -29,6 +29,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // #define MASTER_RIGHT
 // #define EE_HANDS
 
+#define SPLIT_MODS_ENABLE
+#define SPLIT_TRANSPORT_MIRROR
+
 #define USE_SERIAL_PD2
 
 #define MOUSEKEY_INTERVAL       20
