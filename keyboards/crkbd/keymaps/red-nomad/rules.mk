@@ -1,11 +1,7 @@
-MOUSEKEY_ENABLE     = yes     # Mouse keys
-RGBLIGHT_ENABLE     = no      # Enable WS2812 RGB underlight.
 RGB_MATRIX_ENABLE   = yes
 VIA_ENABLE          = no      # Enable VIA
 OLED_DRIVER_ENABLE  = yes
-LTO_ENABLE          = yes
 TAP_DANCE_ENABLE    = yes
 RAW_ENABLE          = yes
-CONSOLE_ENABLE      = no
 DEBOUNCE_TYPE       = sym_defer_pk
-BOOTMAGIC_ENABLE    = full
+BOOTMAGIC_ENABLE    = no
