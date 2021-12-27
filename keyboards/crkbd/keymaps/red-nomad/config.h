@@ -30,11 +30,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define USE_SERIAL_PD2
 
-#define MOUSEKEY_INTERVAL       20
-#define MOUSEKEY_DELAY          0
-#define MOUSEKEY_TIME_TO_MAX    10
-#define MOUSEKEY_MAX_SPEED      6
-#define MOUSEKEY_WHEEL_DELAY 0
+// milliseconds between repeated motion events
+#define MOUSEKEY_INTERVAL            16
+// number of pixels per move
+#define MOUSEKEY_MOVE_DELTA          1
+// milliseconds between the initial key press and first repeated motion event
+#define MOUSEKEY_DELAY               50
+// number of events (count) accelerating to steady speed
+#define MOUSEKEY_TIME_TO_MAX         60
+// steady speed (in move_delta units) applied each event
+#define MOUSEKEY_MAX_SPEED           40
+
+#define MOUSEKEY_WHEEL_DELAY         50
+#define MOUSEKEY_WHEEL_INTERVAL      50
+#define MOUSEKEY_WHEEL_TIME_TO_MAX   80
 
 #define TAPPING_TOGGLE  1
 #define TAPPING_TERM    180
