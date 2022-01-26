@@ -21,10 +21,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "print.h"
 
 #define BASE 0
-#define L1 1
-#define L2 2
-#define L3 3
-#define L4 4
+#define BASE2 1
+#define L1 2
+#define L2 3
+#define L3 4
+#define L4 5
 
 #define OLED_USER_TIMEOUT 60000
 
@@ -54,6 +55,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                 //`---------------------------------------------'                    `--------------------------------------------'
   ),
 
+  [BASE2] = LAYOUT_split_3x6_3(
+    //,-----------------------------------------------------------------------------------------.                                                   ,-----------------------------------------------------------------------------------------.
+        LT(L4,KC_TAB),          KC_Q,          KC_W,          KC_E,          KC_R,          KC_T,                                                              KC_Y,          KC_U,          KC_I,          KC_O,          KC_P,     KC_BSPACE,
+    //|--------------+--------------+--------------+--------------+--------------+--------------|                                                   |--------------+--------------+--------------+--------------+--------------+--------------|
+       HYPR_T(KC_ESC),          KC_A,          KC_S,          KC_D,          KC_F,          KC_G,                                                              KC_H,          KC_J,          KC_K,          KC_L,       KC_SCLN,        KC_ENT,
+    //|--------------+--------------+--------------+--------------+--------------+--------------|                                                   |--------------+--------------+--------------+--------------+--------------+--------------|
+              KC_LSFT,          KC_Z,          KC_X,          KC_C,          KC_V,          KC_B,                                                              KC_N,          KC_M,       KC_COMM,        KC_DOT,       KC_SLSH,       KC_RSFT,
+    //|--------------+--------------+--------------+--------------+--------------+--------------+---------------|                    |--------------+--------------+--------------+--------------+--------------+--------------+--------------|
+                                                                TD(TD_LALT_LCTRL),LT(L2,KC_QUOTE),        KC_SPC,                     LCTL_T(KC_SPC),LT(L1,KC_BSLASH),TD(TD_RALT_LGUI)
+                                                                //`---------------------------------------------'                    `--------------------------------------------'
+  ),
+
   [L1] = LAYOUT_split_3x6_3(
     //,-----------------------------------------------------------------------------------------.                                                   ,-----------------------------------------------------------------------------------------.
               _______,         KC_UP,       XXXXXXX,       XXXXXXX,       XXXXXXX,       XXXXXXX,                                                           KC_HOME,       KC_PGDN,       KC_PGUP,        KC_END,     KC_INSERT,     KC_DELETE,
@@ -80,7 +93,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [L3] = LAYOUT_split_3x6_3(
     //,-----------------------------------------------------------------------------------------.                                                   ,-----------------------------------------------------------------------------------------.
- MAGIC_TOGGLE_CTL_GUI,  KC_MS_ACCEL0,KC_MEDIA_PLAY_PAUSE,KC_MEDIA_PREV_TRACK,KC_MEDIA_NEXT_TRACK,XXXXXXX,                                             KC_MS_WH_LEFT, KC_MS_WH_DOWN,   KC_MS_WH_UP,KC_MS_WH_RIGHT,       RGB_TOG,KC_SYSTEM_POWER,
+             DF(BASE),  KC_MS_ACCEL0,KC_MEDIA_PLAY_PAUSE,KC_MEDIA_PREV_TRACK,KC_MEDIA_NEXT_TRACK,DF(BASE2),                                           KC_MS_WH_LEFT, KC_MS_WH_DOWN,   KC_MS_WH_UP,KC_MS_WH_RIGHT,       RGB_TOG,KC_SYSTEM_POWER,
     //|--------------+--------------+--------------+--------------+--------------+--------------|                                                   |--------------+--------------+--------------+--------------+--------------+--------------|
          EEPROM_RESET,  KC_MS_ACCEL1,    KC_MS_BTN3,    KC_MS_BTN2,    KC_MS_BTN1,    KC_MS_BTN4,                                                        KC_MS_LEFT,    KC_MS_DOWN,      KC_MS_UP,   KC_MS_RIGHT,       RGB_SPI,KC_SYSTEM_SLEEP,
     //|--------------+--------------+--------------+--------------+--------------+--------------|                                                   |--------------+--------------+--------------+--------------+--------------+--------------|
@@ -96,7 +109,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //|--------------+--------------+--------------+--------------+--------------+--------------|                                                   |--------------+--------------+--------------+--------------+--------------+--------------|
               _______,        KC_F11,        KC_F12,        KC_F13,        KC_F14,        KC_F15,                                                            KC_F16,        KC_F17,        KC_F18,        KC_F19,        KC_F20,       _______,
     //|--------------+--------------+--------------+--------------+--------------+--------------|                                                   |--------------+--------------+--------------+--------------+--------------+--------------|
-              _______,        KC_F21,        KC_F22,        KC_F23,        KC_F24,       XXXXXXX,                                                   DYN_MACRO_PLAY1,DYN_MACRO_PLAY2,DYN_REC_START1,DYN_REC_START2, DYN_REC_STOP,       _______,
+              _______,        KC_F21,        KC_F22,        KC_F23,        KC_F24,MAGIC_TOGGLE_CTL_GUI,                                             DYN_MACRO_PLAY1,DYN_MACRO_PLAY2,DYN_REC_START1,DYN_REC_START2, DYN_REC_STOP,       _______,
     //|--------------+--------------+--------------+--------------+--------------+--------------+---------------|                    |--------------+--------------+--------------+--------------+--------------+--------------+--------------|
                                                                           _______,       _______,        _______,                            _______,       _______,       _______
                                                                 //`---------------------------------------------'                    `--------------------------------------------'
@@ -112,10 +125,11 @@ oled_rotation_t oled_init_user(oled_rotation_t rotation) {
 }
 
 #define L_BASE 0
-#define L_LOWER 2
-#define L_RAISE 4
-#define L_ADJUST 8
-#define L_FUNCTION 16
+#define L_BASE2 2
+#define L_LOWER 4
+#define L_RAISE 8
+#define L_ADJUST 16
+#define L_FUNCTION 32
 
 #ifdef CONSOLE_ENABLE
 void keyboard_post_init_user(void) {
@@ -146,7 +160,10 @@ void oled_render_layer_state(void) {
     oled_write_P(PSTR("Layer: "), false);
     switch (layer_state) {
         case L_BASE:
-            oled_write_ln_P(PSTR("Default"), false);
+            oled_write_ln_P(PSTR("Default 1"), false);
+            break;
+        case L_BASE2:
+            oled_write_ln_P(PSTR("Default 2"), false);
             break;
         case L_LOWER:
             oled_write_ln_P(PSTR("Lower"), false);
