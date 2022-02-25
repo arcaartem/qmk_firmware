@@ -252,11 +252,13 @@ void oled_render_logo(void) {
 }
 
 bool oled_task_user(void) {
-#    ifdef ENCODER_ENABLE
-    if (last_matrix_activity_elapsed() > OLED_USER_TIMEOUT && last_encoder_activity_elapsed() > OLED_USER_TIMEOUT) {
-#    else
-    if (last_matrix_activity_elapsed() > OLED_USER_TIMEOUT) {
-#    endif
+#ifdef ENCODER_ENABLE
+    bool is_activity_elapsed = (last_matrix_activity_elapsed() > OLED_USER_TIMEOUT && last_encoder_activity_elapsed() > OLED_USER_TIMEOUT);
+#else
+    bool is_activity_elapsed = (last_matrix_activity_elapsed() > OLED_USER_TIMEOUT);
+#endif
+
+    if (is_activity_elapsed) {
         if (is_oled_on()) {
             oled_off();
         }
