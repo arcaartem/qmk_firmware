@@ -208,7 +208,7 @@ void set_keylog(uint16_t keycode, keyrecord_t *record) {
 }
 
 void oled_render_keylog(void) {
-    oled_write_ln(keylog_str, false);
+    oled_write(keylog_str, false);
 }
 
 void oled_render_hid_buffer(uint8_t buffer) {
@@ -283,4 +283,4 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
   return true;
 }
-#endif // OLED_DRIVER_ENABLE
+#endif // OLED_ENABLE
