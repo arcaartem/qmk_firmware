@@ -69,11 +69,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [L1] = LAYOUT_split_3x6_3(
     //,-----------------------------------------------------------------------------------------.                                                   ,-----------------------------------------------------------------------------------------.
-              _______,         KC_UP,       XXXXXXX,       XXXXXXX,       XXXXXXX,       XXXXXXX,                                                           KC_HOME,       KC_PGDN,       KC_PGUP,        KC_END,     KC_INSERT,     KC_DELETE,
+              _______,         KC_UP,       XXXXXXX,       XXXXXXX,       XXXXXXX,       DT_PRNT,                                                           KC_HOME,       KC_PGDN,       KC_PGUP,        KC_END,     KC_INSERT,     KC_DELETE,
     //|--------------+--------------+--------------+--------------+--------------+--------------|                                                   |--------------+--------------+--------------+--------------+--------------+--------------|
-              KC_LEFT,       KC_DOWN,      KC_RIGHT,       XXXXXXX,       XXXXXXX,       XXXXXXX,                                                           KC_LEFT,       KC_DOWN,         KC_UP,      KC_RIGHT,       XXXXXXX,       _______,
+              KC_LEFT,       KC_DOWN,      KC_RIGHT,       XXXXXXX,       XXXXXXX,         DT_UP,                                                           KC_LEFT,       KC_DOWN,         KC_UP,      KC_RIGHT,       XXXXXXX,       _______,
     //|--------------+--------------+--------------+--------------+--------------+--------------|                                                   |--------------+--------------+--------------+--------------+--------------+--------------|
-              _______,    LCTL(KC_Z),    LCTL(KC_X),    LCTL(KC_C),    LCTL(KC_V),       XXXXXXX,                                                     LALT(KC_LEFT), LALT(KC_DOWN),   LALT(KC_UP),LALT(KC_RIGHT),       XXXXXXX,       _______,
+              _______,    LCTL(KC_Z),    LCTL(KC_X),    LCTL(KC_C),    LCTL(KC_V),       DT_DOWN,                                                     LALT(KC_LEFT), LALT(KC_DOWN),   LALT(KC_UP),LALT(KC_RIGHT),       XXXXXXX,       _______,
     //|--------------+--------------+--------------+--------------+--------------+--------------+---------------|                    |--------------+--------------+--------------+--------------+--------------+--------------+--------------|
                                                                           _______,        MO(L3),        _______,                            _______,       _______,       _______
                                                                 //`---------------------------------------------'                    `--------------------------------------------'
