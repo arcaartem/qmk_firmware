@@ -100,8 +100,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define OLED_DISABLE_TIMEOUT
 #define OLED_FONT_H "keyboards/crkbd/lib/customfont.c"
 
-#define NO_MUSIC_MODE
-
-#undef LOCKING_SUPPORT_ENABLE
-#undef LOCKING_RESYNC_ENABLE
-#define LAYER_STATE_8BIT
+#define SPLIT_USB_TIMEOUT 10000
+#define SPLIT_USB_TIMEOUT_POLL 100
