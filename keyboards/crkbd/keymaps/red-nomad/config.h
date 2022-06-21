@@ -102,3 +102,4 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define SPLIT_USB_TIMEOUT 10000
 #define SPLIT_USB_TIMEOUT_POLL 100
+#define IGNORE_MOD_TAP_INTERRUPT
