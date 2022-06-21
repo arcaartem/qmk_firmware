@@ -1,5 +1,8 @@
 /*
-Copyright 2019 @foostan
+This is the c configuration file for the keymap
+
+Copyright 2012 Jun Wako <wakojun@gmail.com>
+Copyright 2015 Jack Humbert
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -24,34 +27,29 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define MASTER_LEFT
 // #define MASTER_RIGHT
 // #define EE_HANDS
-#define SPLIT_USB_TIMEOUT 10000
-#define SPLIT_USB_TIMEOUT_POLL 100
 
-#define USE_SERIAL_PD2
-
-// milliseconds between repeated motion events
 #define MOUSEKEY_INTERVAL            16
-// number of pixels per move
 #define MOUSEKEY_MOVE_DELTA          1
-// milliseconds between the initial key press and first repeated motion event
 #define MOUSEKEY_DELAY               50
-// number of events (count) accelerating to steady speed
 #define MOUSEKEY_TIME_TO_MAX         60
-// steady speed (in move_delta units) applied each event
 #define MOUSEKEY_MAX_SPEED           40
-
 #define MOUSEKEY_WHEEL_DELAY         50
 #define MOUSEKEY_WHEEL_INTERVAL      50
 #define MOUSEKEY_WHEEL_TIME_TO_MAX   80
-
 #define TAPPING_TOGGLE  1
 #define TAPPING_TERM    180
-#define IGNORE_MOD_TAP_INTERRUPT // this makes it possible to do rolling combos (zx) with keys that convert to other keys on hold (z becomes ctrl when you hold it, and when this option isn't enabled, z rapidly followed by x actually sends Ctrl-x. That's bad.)
 
 #ifdef RGBLIGHT_ENABLE
-    #undef RGBLED_NUM
-    #define RGBLIGHT_ANIMATIONS
-    #define RGBLED_NUM 27
+    #define RGBLIGHT_EFFECT_BREATHING
+    #define RGBLIGHT_EFFECT_RAINBOW_MOOD
+    #define RGBLIGHT_EFFECT_RAINBOW_SWIRL
+    #define RGBLIGHT_EFFECT_SNAKE
+    #define RGBLIGHT_EFFECT_KNIGHT
+    #define RGBLIGHT_EFFECT_CHRISTMAS
+    #define RGBLIGHT_EFFECT_STATIC_GRADIENT
+    #define RGBLIGHT_EFFECT_RGB_TEST
+    #define RGBLIGHT_EFFECT_ALTERNATING
+    #define RGBLIGHT_EFFECT_TWINKLE
     #define RGBLIGHT_LIMIT_VAL 120
     #define RGBLIGHT_HUE_STEP 10
     #define RGBLIGHT_SAT_STEP 17
@@ -74,10 +72,25 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // #    define ENABLE_RGB_MATRIX_SOLID_COLOR
 #    define ENABLE_RGB_MATRIX_ALPHAS_MODS
-// #    define ENABLE_RGB_MATRIX_GRADIENT_UP_DOWN
-// #    define ENABLE_RGB_MATRIX_GRADIENT_LEFT_RIGHT
 #    define ENABLE_RGB_MATRIX_SOLID_REACTIVE_SIMPLE
 #    define ENABLE_RGB_MATRIX_SOLID_REACTIVE
+#   undef ENABLE_RGB_MATRIX_GRADIENT_UP_DOWN
+#   undef ENABLE_RGB_MATRIX_GRADIENT_LEFT_RIGHT
+#   undef ENABLE_RGB_MATRIX_BREATHING
+#   undef ENABLE_RGB_MATRIX_BAND_SAT
+#   undef ENABLE_RGB_MATRIX_BAND_VAL
+#   undef ENABLE_RGB_MATRIX_BAND_SPIRAL_SAT
+#   undef ENABLE_RGB_MATRIX_BAND_SPIRAL_VAL
+#   undef ENABLE_RGB_MATRIX_CYCLE_ALL
+#   undef ENABLE_RGB_MATRIX_RAINBOW_MOVING_CHEVRON
+#   undef ENABLE_RGB_MATRIX_CYCLE_SPIRAL
+#   undef ENABLE_RGB_MATRIX_RAINDROPS
+#   undef ENABLE_RGB_MATRIX_HUE_BREATHING
+#   undef ENABLE_RGB_MATRIX_PIXEL_FRACTAL
+#   undef ENABLE_RGB_MATRIX_TYPING_HEATMAP
+#   undef ENABLE_RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS
+#   undef ENABLE_RGB_MATRIX_SPLASH
+#   undef ENABLE_RGB_MATRIX_SOLID_SPLAS
 #endif
 
 #ifdef CONSOLE_ENABLE
@@ -86,3 +99,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define OLED_DISABLE_TIMEOUT
 #define OLED_FONT_H "keyboards/crkbd/lib/customfont.c"
+
+#define NO_MUSIC_MODE
+
+#undef LOCKING_SUPPORT_ENABLE
+#undef LOCKING_RESYNC_ENABLE
+#define LAYER_STATE_8BIT
