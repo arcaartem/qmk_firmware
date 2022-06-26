@@ -33,45 +33,47 @@ uint8_t hid_buffers[2][32] = { 0 };
 uint8_t hid_buffer_lengths[2] = { 0 };
 
 enum {
-    TD_LALT_LCTRL,
-    TD_RALT_LGUI,
+    TD_LALT_HYPR,
+    TD_RALT_MEH,
+    TD_RALT_GUI,
 };
 
 qk_tap_dance_action_t tap_dance_actions[] = {
-    [TD_LALT_LCTRL] = ACTION_TAP_DANCE_DOUBLE(KC_LALT, KC_LCTRL),
-    [TD_RALT_LGUI] = ACTION_TAP_DANCE_DOUBLE(KC_RALT, KC_LGUI),
+    [TD_LALT_HYPR] = ACTION_TAP_DANCE_DOUBLE(KC_LALT, KC_HYPR),
+    [TD_RALT_MEH] = ACTION_TAP_DANCE_DOUBLE(KC_RALT, KC_MEH),
+    [TD_RALT_GUI] = ACTION_TAP_DANCE_DOUBLE(KC_RALT, KC_LGUI),
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [BASE] = LAYOUT_split_3x6_3(
     //,-----------------------------------------------------------------------------------------.                                                   ,-----------------------------------------------------------------------------------------.
-        LT(L4,KC_TAB),          KC_Q,          KC_W,          KC_E,          KC_R,          KC_T,                                                              KC_Y,          KC_U,          KC_I,          KC_O,          KC_P,HYPR_T(KC_BSPACE),
+        LT(L4,KC_TAB),          KC_Q,          KC_W,          KC_E,          KC_R,          KC_T,                                                              KC_Y,          KC_U,          KC_I,          KC_O,          KC_P,     KC_BSPACE,
     //|--------------+--------------+--------------+--------------+--------------+--------------|                                                   |--------------+--------------+--------------+--------------+--------------+--------------|
        LCTL_T(KC_ESC),          KC_A,          KC_S,          KC_D,          KC_F,          KC_G,                                                              KC_H,          KC_J,          KC_K,          KC_L,       KC_SCLN,        KC_ENT,
     //|--------------+--------------+--------------+--------------+--------------+--------------|                                                   |--------------+--------------+--------------+--------------+--------------+--------------|
               KC_LSFT,          KC_Z,          KC_X,          KC_C,          KC_V,          KC_B,                                                              KC_N,          KC_M,       KC_COMM,        KC_DOT,       KC_SLSH,       KC_RSFT,
     //|--------------+--------------+--------------+--------------+--------------+--------------+---------------|                    |--------------+--------------+--------------+--------------+--------------+--------------+--------------|
-                                                                TD(TD_LALT_LCTRL),LT(L2,KC_QUOTE),LGUI_T(KC_SPC),                     LCTL_T(KC_SPC),LT(L1,KC_BSLASH),TD(TD_RALT_LGUI)
+                                                                TD(TD_LALT_HYPR),LT(L2,KC_QUOTE),LGUI_T(KC_SPC),                     LCTL_T(KC_SPC),LT(L1,KC_BSLASH),TD(TD_RALT_MEH)
                                                                 //`---------------------------------------------'                    `--------------------------------------------'
   ),
 
   [BASE2] = LAYOUT_split_3x6_3(
     //,-----------------------------------------------------------------------------------------.                                                   ,-----------------------------------------------------------------------------------------.
-        LT(L4,KC_TAB),          KC_Q,          KC_W,          KC_E,          KC_R,          KC_T,                                                              KC_Y,          KC_U,          KC_I,          KC_O,          KC_P,HYPR_T(KC_BSPACE),
+        LT(L4,KC_TAB),          KC_Q,          KC_W,          KC_E,          KC_R,          KC_T,                                                              KC_Y,          KC_U,          KC_I,          KC_O,          KC_P,     KC_BSPACE,
     //|--------------+--------------+--------------+--------------+--------------+--------------|                                                   |--------------+--------------+--------------+--------------+--------------+--------------|
        LCTL_T(KC_ESC),          KC_A,          KC_S,          KC_D,          KC_F,          KC_G,                                                              KC_H,          KC_J,          KC_K,          KC_L,       KC_SCLN,        KC_ENT,
     //|--------------+--------------+--------------+--------------+--------------+--------------|                                                   |--------------+--------------+--------------+--------------+--------------+--------------|
               KC_LSFT,          KC_Z,          KC_X,          KC_C,          KC_V,          KC_B,                                                              KC_N,          KC_M,       KC_COMM,        KC_DOT,       KC_SLSH,       KC_RSFT,
     //|--------------+--------------+--------------+--------------+--------------+--------------+---------------|                    |--------------+--------------+--------------+--------------+--------------+--------------+--------------|
-                                                                TD(TD_LALT_LCTRL),LT(L2,KC_QUOTE),        KC_SPC,                     LCTL_T(KC_SPC),LT(L1,KC_BSLASH),TD(TD_RALT_LGUI)
+                                                                TD(TD_LALT_HYPR),LT(L2,KC_QUOTE),        KC_SPC,                     LCTL_T(KC_SPC),LT(L1,KC_BSLASH),TD(TD_RALT_GUI)
                                                                 //`---------------------------------------------'                    `--------------------------------------------'
   ),
 
   [L1] = LAYOUT_split_3x6_3(
     //,-----------------------------------------------------------------------------------------.                                                   ,-----------------------------------------------------------------------------------------.
-              _______,         KC_UP,       XXXXXXX,       XXXXXXX,       XXXXXXX,       DT_PRNT,                                                           KC_HOME,       KC_PGDN,       KC_PGUP,        KC_END,     KC_INSERT,     KC_DELETE,
+              _______,       XXXXXXX,         KC_UP,       XXXXXXX,       XXXXXXX,       DT_PRNT,                                                           KC_HOME,       KC_PGDN,       KC_PGUP,        KC_END,     KC_INSERT,     KC_DELETE,
     //|--------------+--------------+--------------+--------------+--------------+--------------|                                                   |--------------+--------------+--------------+--------------+--------------+--------------|
-              KC_LEFT,       KC_DOWN,      KC_RIGHT,       XXXXXXX,       XXXXXXX,         DT_UP,                                                           KC_LEFT,       KC_DOWN,         KC_UP,      KC_RIGHT,       XXXXXXX,       _______,
+              _______,       KC_LEFT,       KC_DOWN,      KC_RIGHT,       XXXXXXX,         DT_UP,                                                           KC_LEFT,       KC_DOWN,         KC_UP,      KC_RIGHT,       XXXXXXX,       _______,
     //|--------------+--------------+--------------+--------------+--------------+--------------|                                                   |--------------+--------------+--------------+--------------+--------------+--------------|
               _______,    LCTL(KC_Z),    LCTL(KC_X),    LCTL(KC_C),    LCTL(KC_V),       DT_DOWN,                                                     LALT(KC_LEFT), LALT(KC_DOWN),   LALT(KC_UP),LALT(KC_RIGHT),       XXXXXXX,       _______,
     //|--------------+--------------+--------------+--------------+--------------+--------------+---------------|                    |--------------+--------------+--------------+--------------+--------------+--------------+--------------|
@@ -125,6 +127,7 @@ oled_rotation_t oled_init_user(oled_rotation_t rotation) {
 }
 
 #define L_BASE 0
+#define L_BASE1 1
 #define L_BASE2 2
 #define L_LOWER 4
 #define L_RAISE 8
@@ -160,10 +163,17 @@ void oled_render_layer_state(void) {
     oled_write_P(PSTR("Layer: "), false);
     switch (layer_state) {
         case L_BASE:
-            oled_write_ln_P(PSTR("Default 1"), false);
-            break;
-        case L_BASE2:
-            oled_write_ln_P(PSTR("Default 2"), false);
+            switch (default_layer_state) {
+                case L_BASE:
+                case L_BASE1:
+                    oled_write_ln_P(PSTR("Base"), false);
+                    break;
+                case L_BASE2:
+                    oled_write_ln_P(PSTR("Base 2"), false);
+                    break;
+                default:
+                    oled_write_ln_P(PSTR("Unknown Base"), false);
+            }
             break;
         case L_LOWER:
             oled_write_ln_P(PSTR("Lower"), false);
@@ -195,6 +205,7 @@ const char code_to_name[60] = {
 
 void set_keylog(uint16_t keycode, keyrecord_t *record) {
   char name = ' ';
+  uint16_t rawKeycode = keycode;
     if ((keycode >= QK_MOD_TAP && keycode <= QK_MOD_TAP_MAX) ||
         (keycode >= QK_LAYER_TAP && keycode <= QK_LAYER_TAP_MAX)) { keycode = keycode & 0xFF; }
   if (keycode < 60) {
@@ -202,9 +213,9 @@ void set_keylog(uint16_t keycode, keyrecord_t *record) {
   }
 
   // update keylog
-  snprintf(keylog_str, sizeof(keylog_str), "%dx%d, k%2d : %c",
+  snprintf(keylog_str, sizeof(keylog_str), "%dx%d, k(%04x)[%04x]: %c",
            record->event.key.row, record->event.key.col,
-           keycode, name);
+           keycode, rawKeycode, name);
 }
 
 void oled_render_keylog(void) {
