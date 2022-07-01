@@ -29,14 +29,37 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define OLED_USER_TIMEOUT 60000
 
-uint8_t hid_buffers[2][32] = { 0 };
-uint8_t hid_buffer_lengths[2] = { 0 };
+typedef enum {
+    TD_NONE,
+    TD_UNKNOWN,
+    TD_SINGLE_TAP,
+    TD_SINGLE_HOLD,
+    TD_DOUBLE_TAP,
+    TD_DOUBLE_HOLD,
+    TD_DOUBLE_SINGLE_TAP, // Send two single taps
+    TD_TRIPLE_TAP,
+    TD_TRIPLE_HOLD
+} td_state_t;
+
+typedef struct {
+    bool is_press_action;
+    td_state_t state;
+} td_tap_t;
+
+td_state_t cur_dance(qk_tap_dance_state_t *state);
+
+void layer_quote_dance_finished(qk_tap_dance_state_t *state, void *user_data);
+void layer_quote_dance_reset(qk_tap_dance_state_t *state, void *user_data);
+void layer_slash_dance_finished(qk_tap_dance_state_t *state, void *user_data);
+void layer_slash_dance_reset(qk_tap_dance_state_t *state, void *user_data);
 
 enum {
     TD_LSFT_HYPR,
     TD_LALT_MEH,
     TD_RALT_MEH,
     TD_RALT_GUI,
+    TD_LAYER_QUOTE,
+    TD_LAYER_SLASH,
 };
 
 qk_tap_dance_action_t tap_dance_actions[] = {
@@ -44,7 +67,12 @@ qk_tap_dance_action_t tap_dance_actions[] = {
     [TD_LALT_MEH] = ACTION_TAP_DANCE_DOUBLE(KC_LALT, KC_MEH),
     [TD_RALT_MEH] = ACTION_TAP_DANCE_DOUBLE(KC_RALT, KC_MEH),
     [TD_RALT_GUI] = ACTION_TAP_DANCE_DOUBLE(KC_RALT, KC_LGUI),
+    [TD_LAYER_QUOTE] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, layer_quote_dance_finished, layer_quote_dance_reset),
+    [TD_LAYER_SLASH] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, layer_slash_dance_finished, layer_slash_dance_reset),
 };
+
+uint8_t hid_buffers[2][32] = { 0 };
+uint8_t hid_buffer_lengths[2] = { 0 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [BASE] = LAYOUT_split_3x6_3(
@@ -55,7 +83,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //|--------------+--------------+--------------+--------------+--------------+--------------|                                                   |--------------+--------------+--------------+--------------+--------------+--------------|
      TD(TD_LSFT_HYPR),          KC_Z,          KC_X,          KC_C,          KC_V,          KC_B,                                                              KC_N,          KC_M,       KC_COMM,        KC_DOT,       KC_SLSH,       KC_RSFT,
     //|--------------+--------------+--------------+--------------+--------------+--------------+---------------|                    |--------------+--------------+--------------+--------------+--------------+--------------+--------------|
-                                                                TD(TD_LALT_MEH),LT(L2,KC_QUOTE),LGUI_T(KC_SPC),                     LCTL_T(KC_SPC),LT(L1,KC_BSLASH),TD(TD_RALT_MEH)
+                                                                TD(TD_LALT_MEH),TD(TD_LAYER_QUOTE),LGUI_T(KC_SPC),                    LCTL_T(KC_SPC),TD(TD_LAYER_SLASH),TD(TD_RALT_MEH)
                                                                 //`---------------------------------------------'                    `--------------------------------------------'
   ),
 
@@ -67,7 +95,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //|--------------+--------------+--------------+--------------+--------------+--------------|                                                   |--------------+--------------+--------------+--------------+--------------+--------------|
      TD(TD_LSFT_HYPR),          KC_Z,          KC_X,          KC_C,          KC_V,          KC_B,                                                              KC_N,          KC_M,       KC_COMM,        KC_DOT,       KC_SLSH,       KC_RSFT,
     //|--------------+--------------+--------------+--------------+--------------+--------------+---------------|                    |--------------+--------------+--------------+--------------+--------------+--------------+--------------|
-                                                                TD(TD_LALT_MEH),LT(L2,KC_QUOTE),        KC_SPC,                     LCTL_T(KC_SPC),LT(L1,KC_BSLASH),TD(TD_RALT_GUI)
+                                                                TD(TD_LALT_MEH),TD(TD_LAYER_QUOTE),       KC_SPC,                     LCTL_T(KC_SPC),TD(TD_LAYER_SLASH),TD(TD_RALT_GUI)
                                                                 //`---------------------------------------------'                    `--------------------------------------------'
   ),
 
@@ -75,9 +103,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //,-----------------------------------------------------------------------------------------.                                                   ,-----------------------------------------------------------------------------------------.
               _______,       _______,       _______,       _______,       _______,       DT_PRNT,                                                           KC_HOME,       KC_PGDN,       KC_PGUP,        KC_END,     KC_INSERT,     KC_DELETE,
     //|--------------+--------------+--------------+--------------+--------------+--------------|                                                   |--------------+--------------+--------------+--------------+--------------+--------------|
-              _______,       _______,       _______,       _______,       _______,         DT_UP,                                                           KC_LEFT,       KC_DOWN,         KC_UP,      KC_RIGHT,       XXXXXXX,       _______,
+              _______,       _______,       _______,       _______,       _______,         DT_UP,                                                           KC_LEFT,       KC_DOWN,         KC_UP,      KC_RIGHT,         KC_UP,       _______,
     //|--------------+--------------+--------------+--------------+--------------+--------------|                                                   |--------------+--------------+--------------+--------------+--------------+--------------|
-              _______,       _______,       _______,       _______,       _______,       DT_DOWN,                                                     LALT(KC_LEFT), LALT(KC_DOWN),   LALT(KC_UP),LALT(KC_RIGHT),       XXXXXXX,       _______,
+              _______,       _______,       _______,       _______,       _______,       DT_DOWN,                                                           _______,       _______,       _______,       KC_LEFT,       KC_DOWN,      KC_RIGHT,
     //|--------------+--------------+--------------+--------------+--------------+--------------+---------------|                    |--------------+--------------+--------------+--------------+--------------+--------------+--------------|
                                                                           _______,        MO(L3),        _______,                            _______,       _______,       _______
                                                                 //`---------------------------------------------'                    `--------------------------------------------'
@@ -87,9 +115,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //,-----------------------------------------------------------------------------------------.                                                   ,-----------------------------------------------------------------------------------------.
            RALT(KC_3),          KC_1,          KC_2,          KC_3,          KC_4,          KC_5,                                                              KC_6,          KC_7,          KC_8,          KC_9,          KC_0,       _______,
     //|--------------+--------------+--------------+--------------+--------------+--------------|                                                   |--------------+--------------+--------------+--------------+--------------+--------------|
-       LCTL_T(KC_ESC),LSFT(KC_GRAVE),LSFT(KC_MINUS),LSFT(KC_EQUAL),LSFT(KC_LBRACKET),LSFT(KC_RBRACKET),                                                    KC_GRAVE,      KC_MINUS,      KC_EQUAL,   KC_LBRACKET,   KC_RBRACKET,       _______,
+              _______,       _______,       _______,       _______,       _______,       _______,                                                          KC_GRAVE,      KC_MINUS,      KC_EQUAL,   KC_LBRACKET,   KC_RBRACKET,       _______,
     //|--------------+--------------+--------------+--------------+--------------+--------------|                                                   |--------------+--------------+--------------+--------------+--------------+--------------|
-              _______,    LSFT(KC_1),    LSFT(KC_2),    LSFT(KC_3),    LSFT(KC_4),    LSFT(KC_5),                                                        LSFT(KC_6),    LSFT(KC_7),    LSFT(KC_8),    LSFT(KC_9),    LSFT(KC_0),       _______,
+              _______,       _______,       _______,       _______,       _______,       _______,                                                           _______,       _______,       _______,       _______,       _______,       _______,
     //|--------------+--------------+--------------+--------------+--------------+--------------+---------------|                    |--------------+--------------+--------------+--------------+--------------+--------------+--------------|
                                                                           _______,       _______,        _______,                            _______,        MO(L3),       _______
                                                                 //`---------------------------------------------'                    `--------------------------------------------'
@@ -297,3 +325,115 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   return true;
 }
 #endif // OLED_ENABLE
+
+td_state_t cur_dance(qk_tap_dance_state_t *state) {
+    if (state->count == 1) {
+        if (!state->pressed) return TD_SINGLE_TAP;
+        // Key has not been interrupted, but the key is still held. Means you want to send a 'HOLD'.
+        return TD_SINGLE_HOLD;
+    } else if (state->count == 2) {
+        // TD_DOUBLE_SINGLE_TAP is to distinguish between typing "pepper", and actually wanting a double tap
+        // action when hitting 'pp'. Suggested use case for this return value is when you want to send two
+        // keystrokes of the key, and not the 'double tap' action/macro.
+        if (state->pressed) return TD_DOUBLE_HOLD;
+        return TD_DOUBLE_TAP;
+    }
+
+    // Assumes no one is trying to type the same letter three times (at least not quickly).
+    // If your tap dance key is 'KC_W', and you want to type "www." quickly - then you will need to add
+    // an exception here to return a 'TD_TRIPLE_SINGLE_TAP', and define that enum just like 'TD_DOUBLE_SINGLE_TAP'
+    if (state->count == 3) {
+        if (!state->pressed) return TD_TRIPLE_TAP;
+        return TD_TRIPLE_HOLD;
+    } else return TD_UNKNOWN;
+}
+
+// Create an instance of 'td_tap_t' for the 'x' tap dance.
+static td_tap_t xtap_state = {
+    .is_press_action = true,
+    .state = TD_NONE
+};
+
+void layer_quote_dance_finished(qk_tap_dance_state_t *state, void *user_data) {
+    xtap_state.state = cur_dance(state);
+    switch (xtap_state.state) {
+        case TD_SINGLE_TAP: register_code(KC_QUOTE); break;
+        case TD_SINGLE_HOLD: layer_on(L2); break;
+        case TD_DOUBLE_TAP: register_code(KC_LSFT); register_code(KC_QUOTE); break;
+        case TD_DOUBLE_HOLD: register_code(KC_LSFT); layer_on(L2); break;
+        // Last case is for fast typing. Assuming your key is `f`:
+        // For example, when typing the word `buffer`, and you want to make sure that you send `ff` and not `Esc`.
+        // In order to type `ff` when typing fast, the next character will have to be hit within the `TAPPING_TERM`, which by default is 200ms.
+        case TD_DOUBLE_SINGLE_TAP: tap_code(KC_QUOTE); register_code(KC_QUOTE); break;
+        case TD_TRIPLE_TAP:
+            if (layer_state_is(L2)) {
+                // If already set, then switch it off
+                layer_off(L2);
+            } else {
+                // If not already set, then switch the layer on
+                layer_on(L2);
+            }
+            break;
+        case TD_TRIPLE_HOLD:
+        default:
+        break;
+
+    }
+}
+
+void layer_quote_dance_reset(qk_tap_dance_state_t *state, void *user_data) {
+    switch (xtap_state.state) {
+        case TD_SINGLE_TAP: unregister_code(KC_QUOTE); break;
+        case TD_SINGLE_HOLD: layer_off(L2); break;
+        case TD_DOUBLE_TAP: unregister_code(KC_QUOTE); unregister_code(KC_LSFT); break;
+        case TD_DOUBLE_HOLD: unregister_code(KC_LSFT); layer_off(L2); break;
+        case TD_DOUBLE_SINGLE_TAP: unregister_code(KC_QUOTE); break;
+        case TD_TRIPLE_TAP:
+        case TD_TRIPLE_HOLD:
+        default:
+        break;
+    }
+    xtap_state.state = TD_NONE;
+}
+
+void layer_slash_dance_finished(qk_tap_dance_state_t *state, void *user_data) {
+    xtap_state.state = cur_dance(state);
+    switch (xtap_state.state) {
+        case TD_SINGLE_TAP: register_code(KC_BSLASH); break;
+        case TD_SINGLE_HOLD: layer_on(L1); break;
+        case TD_DOUBLE_TAP: register_code(KC_LSFT); register_code(KC_BSLASH); break;
+        case TD_DOUBLE_HOLD: register_code(KC_LALT); layer_on(L1); break;
+        // Last case is for fast typing. Assuming your key is `f`:
+        // For example, when typing the word `buffer`, and you want to make sure that you send `ff` and not `Esc`.
+        // In order to type `ff` when typing fast, the next character will have to be hit within the `TAPPING_TERM`, which by default is 200ms.
+        case TD_DOUBLE_SINGLE_TAP: tap_code(KC_BSLASH); register_code(KC_BSLASH); break;
+        case TD_TRIPLE_TAP:
+            if (layer_state_is(L1)) {
+                // If already set, then switch it off
+                layer_off(L1);
+            } else {
+                // If not already set, then switch the layer on
+                layer_on(L1);
+            }
+            break;
+        case TD_TRIPLE_HOLD:
+        default:
+        break;
+
+    }
+}
+
+void layer_slash_dance_reset(qk_tap_dance_state_t *state, void *user_data) {
+    switch (xtap_state.state) {
+        case TD_SINGLE_TAP: unregister_code(KC_BSLASH); break;
+        case TD_SINGLE_HOLD: layer_off(L1); break;
+        case TD_DOUBLE_TAP: unregister_code(KC_BSLASH); unregister_code(KC_LSFT); break;
+        case TD_DOUBLE_HOLD: unregister_code(KC_LALT); layer_off(L1); break;
+        case TD_DOUBLE_SINGLE_TAP: unregister_code(KC_BSLASH); break;
+        case TD_TRIPLE_TAP:
+        case TD_TRIPLE_HOLD:
+        default:
+        break;
+    }
+    xtap_state.state = TD_NONE;
+}
