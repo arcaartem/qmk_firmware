@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define L3 4
 #define L4 5
 
-#define OLED_USER_TIMEOUT 60000
+#define OLED_USER_TIMEOUT 30000
 
 typedef enum {
     TD_NONE,
@@ -52,23 +52,29 @@ void layer_quote_dance_finished(qk_tap_dance_state_t *state, void *user_data);
 void layer_quote_dance_reset(qk_tap_dance_state_t *state, void *user_data);
 void layer_slash_dance_finished(qk_tap_dance_state_t *state, void *user_data);
 void layer_slash_dance_reset(qk_tap_dance_state_t *state, void *user_data);
+void layer_meh_dance_finished(qk_tap_dance_state_t *state, void *user_data);
+void layer_meh_dance_reset(qk_tap_dance_state_t *state, void *user_data);
 
 enum {
     TD_LSFT_HYPR,
     TD_LALT_MEH,
+    TD_LALT_RALT,
     TD_RALT_MEH,
     TD_RALT_GUI,
     TD_LAYER_QUOTE,
     TD_LAYER_SLASH,
+    TD_LAYER_MEH,
 };
 
 qk_tap_dance_action_t tap_dance_actions[] = {
     [TD_LSFT_HYPR] = ACTION_TAP_DANCE_DOUBLE(KC_LSFT, KC_HYPR),
     [TD_LALT_MEH] = ACTION_TAP_DANCE_DOUBLE(KC_LALT, KC_MEH),
+    [TD_LALT_RALT] = ACTION_TAP_DANCE_DOUBLE(KC_LALT, KC_RALT),
     [TD_RALT_MEH] = ACTION_TAP_DANCE_DOUBLE(KC_RALT, KC_MEH),
     [TD_RALT_GUI] = ACTION_TAP_DANCE_DOUBLE(KC_RALT, KC_LGUI),
     [TD_LAYER_QUOTE] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, layer_quote_dance_finished, layer_quote_dance_reset),
     [TD_LAYER_SLASH] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, layer_slash_dance_finished, layer_slash_dance_reset),
+    [TD_LAYER_MEH] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, layer_meh_dance_finished, layer_meh_dance_reset),
 };
 
 uint8_t hid_buffers[2][32] = { 0 };
@@ -83,7 +89,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //|--------------+--------------+--------------+--------------+--------------+--------------|                                                   |--------------+--------------+--------------+--------------+--------------+--------------|
      TD(TD_LSFT_HYPR),          KC_Z,          KC_X,          KC_C,          KC_V,          KC_B,                                                              KC_N,          KC_M,       KC_COMM,        KC_DOT,       KC_SLSH,       KC_RSFT,
     //|--------------+--------------+--------------+--------------+--------------+--------------+---------------|                    |--------------+--------------+--------------+--------------+--------------+--------------+--------------|
-                                                                TD(TD_LALT_MEH),TD(TD_LAYER_QUOTE),LGUI_T(KC_SPC),                    LCTL_T(KC_SPC),TD(TD_LAYER_SLASH),TD(TD_RALT_MEH)
+                                                                TD(TD_LAYER_MEH),TD(TD_LAYER_QUOTE),LGUI_T(KC_SPC),                    LCTL_T(KC_SPC),TD(TD_LAYER_SLASH),TD(TD_LALT_RALT)
                                                                 //`---------------------------------------------'                    `--------------------------------------------'
   ),
 
@@ -95,13 +101,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //|--------------+--------------+--------------+--------------+--------------+--------------|                                                   |--------------+--------------+--------------+--------------+--------------+--------------|
      TD(TD_LSFT_HYPR),          KC_Z,          KC_X,          KC_C,          KC_V,          KC_B,                                                              KC_N,          KC_M,       KC_COMM,        KC_DOT,       KC_SLSH,       KC_RSFT,
     //|--------------+--------------+--------------+--------------+--------------+--------------+---------------|                    |--------------+--------------+--------------+--------------+--------------+--------------+--------------|
-                                                                TD(TD_LALT_MEH),TD(TD_LAYER_QUOTE),       KC_SPC,                     LCTL_T(KC_SPC),TD(TD_LAYER_SLASH),TD(TD_RALT_GUI)
+                                                                TD(TD_LAYER_MEH),TD(TD_LAYER_QUOTE),      KC_SPC,                     LCTL_T(KC_SPC),TD(TD_LAYER_SLASH),TD(TD_RALT_GUI)
                                                                 //`---------------------------------------------'                    `--------------------------------------------'
   ),
 
   [L1] = LAYOUT_split_3x6_3(
     //,-----------------------------------------------------------------------------------------.                                                   ,-----------------------------------------------------------------------------------------.
-              _______,       _______,       _______,       _______,       _______,       DT_PRNT,                                                           KC_HOME,       KC_PGDN,       KC_PGUP,        KC_END,     KC_INSERT,     KC_DELETE,
+              _______,       _______,   KC_NUM_LOCK,  KC_CAPS_LOCK,KC_SCROLL_LOCK,       DT_PRNT,                                                           KC_HOME,       KC_PGDN,       KC_PGUP,        KC_END,     KC_INSERT,     KC_DELETE,
     //|--------------+--------------+--------------+--------------+--------------+--------------|                                                   |--------------+--------------+--------------+--------------+--------------+--------------|
               _______,       _______,       _______,       _______,       _______,         DT_UP,                                                           KC_LEFT,       KC_DOWN,         KC_UP,      KC_RIGHT,         KC_UP,       _______,
     //|--------------+--------------+--------------+--------------+--------------+--------------|                                                   |--------------+--------------+--------------+--------------+--------------+--------------|
@@ -150,28 +156,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 #ifdef OLED_ENABLE
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
-  if (!is_keyboard_master()) {
-    return OLED_ROTATION_180;  // flips the display 180 degrees if offhand
+  if (is_keyboard_master()) {
+    return OLED_ROTATION_0;
   }
-  return rotation;
+  return OLED_ROTATION_180;
 }
 
-#define L_BASE 0
-#define L_BASE1 1
-#define L_BASE2 2
-#define L_LOWER 4
-#define L_RAISE 8
-#define L_ADJUST 16
-#define L_FUNCTION 32
-
-#ifdef CONSOLE_ENABLE
-void keyboard_post_init_user(void) {
-  debug_enable=true;
-  debug_matrix=true;
-  debug_keyboard=true;
-  debug_mouse=true;
-}
-#endif
+#    define L_BASE 0
+#    define L_BASE1 1
+#    define L_BASE2 2
+#    define L_LOWER 4
+#    define L_RAISE 8
+#    define L_ADJUST 16
+#    define L_FUNCTION 32
 
 void raw_hid_receive(uint8_t *data, uint8_t length) {
     if (is_oled_on()) {
@@ -190,37 +187,69 @@ void raw_hid_receive(uint8_t *data, uint8_t length) {
 }
 
 void oled_render_layer_state(void) {
-    oled_write_P(PSTR("Layer: "), false);
+    oled_write_P(PSTR("L:"), false);
     switch (layer_state) {
         case L_BASE:
             switch (default_layer_state) {
                 case L_BASE:
                 case L_BASE1:
-                    oled_write_ln_P(PSTR("Base"), false);
+                    oled_write_ln_P(PSTR("Base 1"), false);
                     break;
                 case L_BASE2:
                     oled_write_ln_P(PSTR("Base 2"), false);
                     break;
                 default:
-                    oled_write_ln_P(PSTR("Unknown Base"), false);
+                    oled_write_ln_P(PSTR("------"), false);
             }
             break;
         case L_LOWER:
-            oled_write_ln_P(PSTR("Lower"), false);
+            oled_write_ln_P(PSTR("Lower "), false);
             break;
         case L_RAISE:
-            oled_write_ln_P(PSTR("Raise"), false);
+            oled_write_ln_P(PSTR("Raise "), false);
             break;
         case L_ADJUST:
         case L_ADJUST|L_LOWER:
         case L_ADJUST|L_RAISE:
         case L_ADJUST|L_LOWER|L_RAISE:
-            oled_write_ln_P(PSTR("Adjust"), false);
+            oled_write_ln_P(PSTR("Device"), false);
             break;
         case L_FUNCTION:
-            oled_write_ln_P(PSTR("Function"), false);
+            oled_write_ln_P(PSTR("F Keys"), false);
             break;
     }
+}
+
+void oled_print_mod(uint16_t mods, uint16_t mod_mask, char * indicator) {
+    if ((mods & mod_mask) > 0)
+        oled_write(indicator, false);
+    else
+        oled_write_P(PSTR(" "), false);
+}
+
+void oled_render_mod_state(void) {
+    oled_write_P(PSTR("M:"), false);
+    uint16_t mods = get_mods();
+    oled_write_P(((mods & MOD_MASK_GUI) > 0) ? PSTR("G") : PSTR("_"), false);
+    oled_write_P(((mods & MOD_MASK_CTRL) > 0) ? PSTR("C") : PSTR("_"), false);
+    oled_write_P(((mods & MOD_MASK_ALT) > 0) ? PSTR("A") : PSTR("_"), false);
+    oled_write_P(((mods & MOD_MASK_SHIFT) > 0) ? PSTR("S") : PSTR("_"), false);
+    oled_write_P(PSTR(" "), false);
+}
+
+void oled_render_host_led_status(void) {
+    oled_write_P(PSTR("H:"), false);
+    led_t led_state = host_keyboard_led_state();
+    oled_write_P(led_state.num_lock ? PSTR("N") : PSTR("_"), false);
+    oled_write_P(led_state.caps_lock ? PSTR("C") : PSTR("_"), false);
+    oled_write_P(led_state.scroll_lock ? PSTR("S") : PSTR("_"), false);
+    oled_write_P(PSTR(" "), false);
+}
+
+void oled_render_layer_mod_host_state(void) {
+    oled_render_mod_state();
+    oled_render_host_led_status();
+    oled_render_layer_state();
 }
 
 char keylog_str[24] = {};
@@ -243,9 +272,9 @@ void set_keylog(uint16_t keycode, keyrecord_t *record) {
   }
 
   // update keylog
-  snprintf(keylog_str, sizeof(keylog_str), "%dx%d, k(%04x)[%04x]: %c",
+  snprintf(keylog_str, sizeof(keylog_str), "%dx%d, k[%04x]:'%c'",
            record->event.key.row, record->event.key.col,
-           keycode, rawKeycode, name);
+           rawKeycode, name);
 }
 
 void oled_render_keylog(void) {
@@ -266,21 +295,6 @@ void oled_render_hid_message(void) {
     oled_render_hid_buffer(0);
     oled_write_ln_P(PSTR(""), false);
     oled_render_hid_buffer(1);
-}
-
-void render_bootmagic_status(bool status) {
-    /* Show Ctrl-Gui Swap options */
-    static const char PROGMEM logo[][2][3] = {
-        {{0x97, 0x98, 0}, {0xb7, 0xb8, 0}},
-        {{0x95, 0x96, 0}, {0xb5, 0xb6, 0}},
-    };
-    if (status) {
-        oled_write_ln_P(logo[0][0], false);
-        oled_write_ln_P(logo[0][1], false);
-    } else {
-        oled_write_ln_P(logo[1][0], false);
-        oled_write_ln_P(logo[1][1], false);
-    }
 }
 
 void oled_render_logo(void) {
@@ -308,8 +322,9 @@ bool oled_task_user(void) {
         oled_on();
     }
 
+#
     if (is_keyboard_master()) {
-        oled_render_layer_state();
+        oled_render_layer_mod_host_state();
         oled_render_keylog();
         oled_render_hid_message();
     } else {
@@ -374,7 +389,6 @@ void layer_quote_dance_finished(qk_tap_dance_state_t *state, void *user_data) {
                 layer_on(L2);
             }
             break;
-        case TD_TRIPLE_HOLD:
         default:
         break;
 
@@ -388,8 +402,6 @@ void layer_quote_dance_reset(qk_tap_dance_state_t *state, void *user_data) {
         case TD_DOUBLE_TAP: unregister_code(KC_QUOTE); unregister_code(KC_LSFT); break;
         case TD_DOUBLE_HOLD: unregister_code(KC_LSFT); layer_off(L2); break;
         case TD_DOUBLE_SINGLE_TAP: unregister_code(KC_QUOTE); break;
-        case TD_TRIPLE_TAP:
-        case TD_TRIPLE_HOLD:
         default:
         break;
     }
@@ -416,10 +428,8 @@ void layer_slash_dance_finished(qk_tap_dance_state_t *state, void *user_data) {
                 layer_on(L1);
             }
             break;
-        case TD_TRIPLE_HOLD:
         default:
         break;
-
     }
 }
 
@@ -430,8 +440,27 @@ void layer_slash_dance_reset(qk_tap_dance_state_t *state, void *user_data) {
         case TD_DOUBLE_TAP: unregister_code(KC_BSLASH); unregister_code(KC_LSFT); break;
         case TD_DOUBLE_HOLD: unregister_code(KC_LALT); layer_off(L1); break;
         case TD_DOUBLE_SINGLE_TAP: unregister_code(KC_BSLASH); break;
-        case TD_TRIPLE_TAP:
-        case TD_TRIPLE_HOLD:
+        default:
+        break;
+    }
+    xtap_state.state = TD_NONE;
+}
+
+void layer_meh_dance_finished(qk_tap_dance_state_t *state, void *user_data) {
+    xtap_state.state = cur_dance(state);
+    switch (xtap_state.state) {
+        case TD_SINGLE_HOLD: register_code(KC_LSFT); layer_on(L2); break;
+        case TD_DOUBLE_HOLD: register_code(KC_LSFT); register_code(KC_LCTL); register_code(KC_LALT); break;
+        default:
+        break;
+
+    }
+}
+
+void layer_meh_dance_reset(qk_tap_dance_state_t *state, void *user_data) {
+    switch (xtap_state.state) {
+        case TD_SINGLE_HOLD: unregister_code(KC_LSFT); layer_off(L2); break;
+        case TD_DOUBLE_HOLD: unregister_code(KC_LSFT); unregister_code(KC_LCTL); unregister_code(KC_LALT); break;
         default:
         break;
     }
