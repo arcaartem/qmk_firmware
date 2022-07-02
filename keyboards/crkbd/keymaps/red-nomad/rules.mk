@@ -8,4 +8,4 @@ DYNAMIC_TAPPING_TERM_ENABLE  =  no
 SPACE_CADET_ENABLE = no
 GRAVE_ESC_ENABLE = no
 
-SRC += tap_dance_helper.c
+SRC += tap_dance_helper.c oled_helper.c
