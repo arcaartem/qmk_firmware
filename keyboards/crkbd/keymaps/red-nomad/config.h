@@ -24,9 +24,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /* Select hand configuration */
 
-#define MASTER_LEFT
+// #define MASTER_LEFT
 // #define MASTER_RIGHT
-// #define EE_HANDS
+#define EE_HANDS
 
 #define MOUSEKEY_INTERVAL            16
 #define MOUSEKEY_MOVE_DELTA          1
@@ -102,4 +102,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define SPLIT_USB_TIMEOUT 5000
 #define SPLIT_USB_TIMEOUT_POLL 100
+#define SPLIT_TRANSPORT_MIRROR
+#define SPLIT_LAYER_STATE_ENABLE
+#define SPLIT_MODS_ENABLE
+
 #define IGNORE_MOD_TAP_INTERRUPT
+
+#undef WPM_ENABLE
