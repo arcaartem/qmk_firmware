@@ -27,11 +27,8 @@ qk_tap_dance_action_t tap_dance_actions[] = {
     [TD_LSFT_HYPR] = ACTION_TAP_DANCE_DOUBLE(KC_LSFT, KC_HYPR),
     [TD_LALT_MEH] = ACTION_TAP_DANCE_DOUBLE(KC_LALT, KC_MEH),
     [TD_LALT_RALT] = ACTION_TAP_DANCE_DOUBLE(KC_LALT, KC_RALT),
-    [TD_RALT_MEH] = ACTION_TAP_DANCE_DOUBLE(KC_RALT, KC_MEH),
     [TD_RALT_GUI] = ACTION_TAP_DANCE_DOUBLE(KC_RALT, KC_LGUI),
-    [TD_LAYER_QUOTE] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, layer_quote_dance_finished, layer_quote_dance_reset),
     [TD_LAYER_SLASH] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, layer_slash_dance_finished, layer_slash_dance_reset),
-    [TD_LAYER_MEH] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, layer_meh_dance_finished, layer_meh_dance_reset),
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -43,7 +40,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //|--------------+--------------+--------------+--------------+--------------+--------------|                                                   |--------------+--------------+--------------+--------------+--------------+--------------|
      TD(TD_LSFT_HYPR),          KC_Z,          KC_X,          KC_C,          KC_V,          KC_B,                                                              KC_N,          KC_M,       KC_COMM,        KC_DOT,       KC_SLSH,       KC_RSFT,
     //|--------------+--------------+--------------+--------------+--------------+--------------+---------------|                    |--------------+--------------+--------------+--------------+--------------+--------------+--------------|
-                                                                TD(TD_LAYER_MEH),TD(TD_LAYER_QUOTE),LGUI_T(KC_SPC),                    LCTL_T(KC_SPC),TD(TD_LAYER_SLASH),TD(TD_LALT_RALT)
+                                                                  TD(TD_LALT_MEH),LT(L2,KC_QUOTE),LGUI_T(KC_SPC),                    LCTL_T(KC_SPC),TD(TD_LAYER_SLASH),TD(TD_LALT_RALT)
                                                                 //`---------------------------------------------'                    `--------------------------------------------'
   ),
 
@@ -55,7 +52,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //|--------------+--------------+--------------+--------------+--------------+--------------|                                                   |--------------+--------------+--------------+--------------+--------------+--------------|
      TD(TD_LSFT_HYPR),          KC_Z,          KC_X,          KC_C,          KC_V,          KC_B,                                                              KC_N,          KC_M,       KC_COMM,        KC_DOT,       KC_SLSH,       KC_RSFT,
     //|--------------+--------------+--------------+--------------+--------------+--------------+---------------|                    |--------------+--------------+--------------+--------------+--------------+--------------+--------------|
-                                                                TD(TD_LAYER_MEH),TD(TD_LAYER_QUOTE),      KC_SPC,                     LCTL_T(KC_SPC),TD(TD_LAYER_SLASH),TD(TD_RALT_GUI)
+                                                                  TD(TD_LALT_MEH),LT(L2,KC_QUOTE),        KC_SPC,                     LCTL_T(KC_SPC),TD(TD_LAYER_SLASH),TD(TD_RALT_GUI)
                                                                 //`---------------------------------------------'                    `--------------------------------------------'
   ),
 
@@ -75,9 +72,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //,-----------------------------------------------------------------------------------------.                                                   ,-----------------------------------------------------------------------------------------.
            RALT(KC_3),          KC_1,          KC_2,          KC_3,          KC_4,          KC_5,                                                              KC_6,          KC_7,          KC_8,          KC_9,          KC_0,       _______,
     //|--------------+--------------+--------------+--------------+--------------+--------------|                                                   |--------------+--------------+--------------+--------------+--------------+--------------|
-              _______,       _______,       _______,       _______,       _______,       _______,                                                          KC_GRAVE,      KC_MINUS,      KC_EQUAL,   KC_LBRACKET,   KC_RBRACKET,       _______,
+       LCTL_T(KC_ESC),LSFT(KC_GRAVE),LSFT(KC_MINUS),LSFT(KC_EQUAL),LSFT(KC_LBRACKET),LSFT(KC_RBRACKET),                                                    KC_GRAVE,      KC_MINUS,      KC_EQUAL,   KC_LBRACKET,   KC_RBRACKET,       _______,
     //|--------------+--------------+--------------+--------------+--------------+--------------|                                                   |--------------+--------------+--------------+--------------+--------------+--------------|
-              _______,       _______,       _______,       _______,       _______,       _______,                                                           _______,       _______,       _______,       _______,       _______,       _______,
+              _______,    LSFT(KC_1),    LSFT(KC_2),    LSFT(KC_3),    LSFT(KC_4),    LSFT(KC_5),                                                        LSFT(KC_6),    LSFT(KC_7),    LSFT(KC_8),    LSFT(KC_9),    LSFT(KC_0),       _______,
     //|--------------+--------------+--------------+--------------+--------------+--------------+---------------|                    |--------------+--------------+--------------+--------------+--------------+--------------+--------------|
                                                                           _______,       _______,        _______,                            _______,        MO(L3),       _______
                                                                 //`---------------------------------------------'                    `--------------------------------------------'
