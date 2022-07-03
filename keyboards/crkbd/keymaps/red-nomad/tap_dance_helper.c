@@ -30,45 +30,6 @@ td_state_t cur_dance(qk_tap_dance_state_t *state) {
     } else return TD_UNKNOWN;
 }
 
-void layer_quote_dance_finished(qk_tap_dance_state_t *state, void *user_data) {
-    xtap_state.state = cur_dance(state);
-    switch (xtap_state.state) {
-        case TD_SINGLE_TAP: register_code(KC_QUOTE); break;
-        case TD_SINGLE_HOLD: layer_on(L2); break;
-        case TD_DOUBLE_TAP: register_code(KC_LSFT); register_code(KC_QUOTE); break;
-        case TD_DOUBLE_HOLD: register_code(KC_LSFT); layer_on(L2); break;
-        // Last case is for fast typing. Assuming your key is `f`:
-        // For example, when typing the word `buffer`, and you want to make sure that you send `ff` and not `Esc`.
-        // In order to type `ff` when typing fast, the next character will have to be hit within the `TAPPING_TERM`, which by default is 200ms.
-        case TD_DOUBLE_SINGLE_TAP: tap_code(KC_QUOTE); register_code(KC_QUOTE); break;
-        case TD_TRIPLE_TAP:
-            if (layer_state_is(L2)) {
-                // If already set, then switch it off
-                layer_off(L2);
-            } else {
-                // If not already set, then switch the layer on
-                layer_on(L2);
-            }
-            break;
-        default:
-        break;
-
-    }
-}
-
-void layer_quote_dance_reset(qk_tap_dance_state_t *state, void *user_data) {
-    switch (xtap_state.state) {
-        case TD_SINGLE_TAP: unregister_code(KC_QUOTE); break;
-        case TD_SINGLE_HOLD: layer_off(L2); break;
-        case TD_DOUBLE_TAP: unregister_code(KC_QUOTE); unregister_code(KC_LSFT); break;
-        case TD_DOUBLE_HOLD: unregister_code(KC_LSFT); layer_off(L2); break;
-        case TD_DOUBLE_SINGLE_TAP: unregister_code(KC_QUOTE); break;
-        default:
-        break;
-    }
-    xtap_state.state = TD_NONE;
-}
-
 void layer_slash_dance_finished(qk_tap_dance_state_t *state, void *user_data) {
     xtap_state.state = cur_dance(state);
     switch (xtap_state.state) {
@@ -101,27 +62,6 @@ void layer_slash_dance_reset(qk_tap_dance_state_t *state, void *user_data) {
         case TD_DOUBLE_TAP: unregister_code(KC_BSLASH); unregister_code(KC_LSFT); break;
         case TD_DOUBLE_HOLD: unregister_code(KC_LALT); layer_off(L1); break;
         case TD_DOUBLE_SINGLE_TAP: unregister_code(KC_BSLASH); break;
-        default:
-        break;
-    }
-    xtap_state.state = TD_NONE;
-}
-
-void layer_meh_dance_finished(qk_tap_dance_state_t *state, void *user_data) {
-    xtap_state.state = cur_dance(state);
-    switch (xtap_state.state) {
-        case TD_SINGLE_HOLD: register_code(KC_LSFT); layer_on(L2); break;
-        case TD_DOUBLE_HOLD: register_code(KC_LSFT); register_code(KC_LCTL); register_code(KC_LALT); break;
-        default:
-        break;
-
-    }
-}
-
-void layer_meh_dance_reset(qk_tap_dance_state_t *state, void *user_data) {
-    switch (xtap_state.state) {
-        case TD_SINGLE_HOLD: unregister_code(KC_LSFT); layer_off(L2); break;
-        case TD_DOUBLE_HOLD: unregister_code(KC_LSFT); unregister_code(KC_LCTL); unregister_code(KC_LALT); break;
         default:
         break;
     }
