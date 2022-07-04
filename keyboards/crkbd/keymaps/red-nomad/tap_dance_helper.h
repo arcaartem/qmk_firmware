@@ -26,6 +26,7 @@ enum {
     TD_RALT_GUI,
     TD_LAYER_QUOTE,
     TD_LAYER_SLASH,
+    TD_LAYER_ALT_SLASH,
     TD_LAYER_MEH,
 };
 
@@ -35,6 +36,8 @@ void layer_quote_dance_finished(qk_tap_dance_state_t *state, void *user_data);
 void layer_quote_dance_reset(qk_tap_dance_state_t *state, void *user_data);
 void layer_slash_dance_finished(qk_tap_dance_state_t *state, void *user_data);
 void layer_slash_dance_reset(qk_tap_dance_state_t *state, void *user_data);
+void layer_alt_slash_dance_finished(qk_tap_dance_state_t *state, void *user_data);
+void layer_alt_slash_dance_reset(qk_tap_dance_state_t *state, void *user_data);
 void layer_meh_dance_finished(qk_tap_dance_state_t *state, void *user_data);
 void layer_meh_dance_reset(qk_tap_dance_state_t *state, void *user_data);
 
