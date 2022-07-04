@@ -7,6 +7,7 @@
 
 uint8_t hid_buffers[2][32] = { 0 };
 uint8_t hid_buffer_lengths[2] = { 0 };
+char keylog_str[24] = {};
 
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
   if (is_keyboard_master()) {
@@ -28,38 +29,42 @@ void raw_hid_receive(uint8_t *data, uint8_t length) {
         for (uint8_t i=0; i<data_length && i<30; i++) {
             hid_buffers[buffer_select][i] = data[i+2];
         }
-    }
+   }
 }
 
 void oled_render_layer_state(void) {
-    oled_write_P(PSTR("L:"), false);
+    if (layer_state & L_BASE_ALT)
+        oled_write_P(PSTR("*:"), false);
+    else
+        oled_write_P(PSTR("L:"), false);
+
     switch (layer_state) {
         case L_BASE:
-            switch (default_layer_state) {
-                case L_BASE:
-                case L_BASE1:
-                    oled_write_ln_P(PSTR("Base 1"), false);
-                    break;
-                case L_BASE2:
-                    oled_write_ln_P(PSTR("Base 2"), false);
-                    break;
-                default:
-                    oled_write_ln_P(PSTR("------"), false);
-            }
+        case L_BASE | L_BASE_ALT:
+            oled_write_ln_P(PSTR("Base  "), false);
             break;
         case L_LOWER:
+        case L_LOWER | L_BASE_ALT:
+        case L_LOWER | L_LOWER_ALT | L_BASE_ALT:
             oled_write_ln_P(PSTR("Lower "), false);
             break;
         case L_RAISE:
+        case L_RAISE | L_BASE_ALT:
             oled_write_ln_P(PSTR("Raise "), false);
             break;
         case L_ADJUST:
         case L_ADJUST|L_LOWER:
         case L_ADJUST|L_RAISE:
         case L_ADJUST|L_LOWER|L_RAISE:
+        case L_ADJUST|L_BASE_ALT:
+        case L_ADJUST|L_BASE_ALT|L_LOWER:
+        case L_ADJUST|L_BASE_ALT|L_LOWER|L_LOWER_ALT:
+        case L_ADJUST|L_BASE_ALT|L_RAISE:
+        case L_ADJUST|L_BASE_ALT|L_LOWER|L_LOWER_ALT|L_RAISE:
             oled_write_ln_P(PSTR("Device"), false);
             break;
         case L_FUNCTION:
+        case L_FUNCTION|L_BASE_ALT:
             oled_write_ln_P(PSTR("F Keys"), false);
             break;
     }
@@ -97,8 +102,6 @@ void oled_render_layer_mod_host_state(void) {
     oled_render_layer_state();
 }
 
-char keylog_str[24] = {};
-
 const char code_to_name[60] = {
     ' ', ' ', ' ', ' ', 'a', 'b', 'c', 'd', 'e', 'f',
     'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
@@ -117,7 +120,7 @@ void set_keylog(uint16_t keycode, keyrecord_t *record) {
   }
 
   // update keylog
-  snprintf(keylog_str, sizeof(keylog_str), "%dx%d, k[%04x]:'%c'",
+  snprintf(keylog_str, sizeof(keylog_str), "%dx%d k[%04x]:%c",
            record->event.key.row, record->event.key.col,
            rawKeycode, name);
 }
@@ -150,7 +153,6 @@ void oled_render_logo(void) {
         0};
     oled_write_P(crkbd_logo, false);
 }
-
 bool oled_task_user(void) {
 #ifdef ENCODER_ENABLE
     bool is_activity_elapsed = (last_matrix_activity_elapsed() > OLED_USER_TIMEOUT && last_encoder_activity_elapsed() > OLED_USER_TIMEOUT);
