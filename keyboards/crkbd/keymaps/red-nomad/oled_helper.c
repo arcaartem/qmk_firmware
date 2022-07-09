@@ -5,6 +5,7 @@
 
 #define OLED_USER_TIMEOUT 30000
 
+int oled_state = 1;
 uint8_t hid_buffers[2][32] = { 0 };
 uint8_t hid_buffer_lengths[2] = { 0 };
 char keylog_str[24] = {};
@@ -78,21 +79,21 @@ void oled_print_mod(uint16_t mods, uint16_t mod_mask, char * indicator) {
 }
 
 void oled_render_mod_state(void) {
-    oled_write_P(PSTR("M:"), false);
     uint16_t mods = get_mods();
-    oled_write_P(((mods & MOD_MASK_GUI) > 0) ? PSTR("G") : PSTR("_"), false);
-    oled_write_P(((mods & MOD_MASK_CTRL) > 0) ? PSTR("C") : PSTR("_"), false);
-    oled_write_P(((mods & MOD_MASK_ALT) > 0) ? PSTR("A") : PSTR("_"), false);
-    oled_write_P(((mods & MOD_MASK_SHIFT) > 0) ? PSTR("S") : PSTR("_"), false);
+    oled_write_P(PSTR("M:"), false);
+    oled_write_P(PSTR("G"), ((mods & MOD_MASK_GUI) > 0));
+    oled_write_P(PSTR("C"), ((mods & MOD_MASK_CTRL) > 0));
+    oled_write_P(PSTR("A"), ((mods & MOD_MASK_ALT) > 0));
+    oled_write_P(PSTR("S"), ((mods & MOD_MASK_SHIFT) > 0));
     oled_write_P(PSTR(" "), false);
 }
 
 void oled_render_host_led_status(void) {
-    oled_write_P(PSTR("H:"), false);
     led_t led_state = host_keyboard_led_state();
-    oled_write_P(led_state.num_lock ? PSTR("N") : PSTR("_"), false);
-    oled_write_P(led_state.caps_lock ? PSTR("C") : PSTR("_"), false);
-    oled_write_P(led_state.scroll_lock ? PSTR("S") : PSTR("_"), false);
+    oled_write_P(PSTR("H:"), false);
+    oled_write_P(PSTR("N"), led_state.num_lock);
+    oled_write_P(PSTR("C"), led_state.caps_lock);
+    oled_write_P(PSTR("S"), led_state.scroll_lock);
     oled_write_P(PSTR(" "), false);
 }
 
@@ -113,8 +114,7 @@ const char code_to_name[60] = {
 void set_keylog(uint16_t keycode, keyrecord_t *record) {
   char name = ' ';
   uint16_t rawKeycode = keycode;
-    if ((keycode >= QK_MOD_TAP && keycode <= QK_MOD_TAP_MAX) ||
-        (keycode >= QK_LAYER_TAP && keycode <= QK_LAYER_TAP_MAX)) { keycode = keycode & 0xFF; }
+  keycode = keycode & 0x7F;
   if (keycode < 60) {
     name = code_to_name[keycode];
   }
@@ -154,20 +154,25 @@ void oled_render_logo(void) {
     oled_write_P(crkbd_logo, false);
 }
 bool oled_task_user(void) {
-#ifdef ENCODER_ENABLE
-    bool is_activity_elapsed = (last_matrix_activity_elapsed() > OLED_USER_TIMEOUT && last_encoder_activity_elapsed() > OLED_USER_TIMEOUT);
-#else
-    bool is_activity_elapsed = (last_matrix_activity_elapsed() > OLED_USER_TIMEOUT);
-#endif
-
-    if (is_activity_elapsed) {
-        if (is_oled_on()) {
-            oled_off();
-        }
+    if (oled_state == 0) {
+        oled_off();
         return false;
-    } else if (!is_oled_on()) {
-        oled_on();
     }
+
+/*#ifdef ENCODER_ENABLE*/
+    /*bool is_activity_elapsed = (last_matrix_activity_elapsed() > OLED_USER_TIMEOUT && last_encoder_activity_elapsed() > OLED_USER_TIMEOUT);*/
+/*#else*/
+    /*bool is_activity_elapsed = (last_matrix_activity_elapsed() > OLED_USER_TIMEOUT);*/
+/*#endif*/
+
+    /*if (is_activity_elapsed) {*/
+        /*if (is_oled_on()) {*/
+            /*oled_off();*/
+        /*}*/
+        /*return false;*/
+    /*} else if (!is_oled_on()) {*/
+        /*oled_on();*/
+    /*}*/
 
 #
     if (is_keyboard_master()) {
