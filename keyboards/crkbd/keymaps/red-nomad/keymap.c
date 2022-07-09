@@ -29,7 +29,7 @@ qk_tap_dance_action_t tap_dance_actions[] = {
     [TD_LALT_RALT] = ACTION_TAP_DANCE_DOUBLE(KC_LALT, KC_RALT),
     [TD_RALT_GUI] = ACTION_TAP_DANCE_DOUBLE(KC_RALT, KC_LGUI),
     [TD_LAYER_SLASH] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, layer_slash_dance_finished, layer_slash_dance_reset),
-    [TD_LAYER_ALT_SLASH] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, layer_alt_slash_dance_finished, layer_alt_slash_dance_reset),
+    [TD_OLED_TOGGLE] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, oled_toggle_dance_finished, oled_toggle_dance_reset),
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -53,7 +53,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //|--------------+--------------+--------------+--------------+--------------+--------------|                                                   |--------------+--------------+--------------+--------------+--------------+--------------|
               _______,       _______,       _______,       _______,       _______,       _______,                                                           _______,       _______,       _______,       _______,       _______,       _______,
     //|--------------+--------------+--------------+--------------+--------------+--------------+---------------|                    |--------------+--------------+--------------+--------------+--------------+--------------+--------------|
-                                                                          _______,       _______,         KC_SPC,                            _______,TD(TD_LAYER_ALT_SLASH),TD(TD_RALT_GUI)
+                                                                          _______,       _______,         KC_SPC,                            _______,       _______,TD(TD_RALT_GUI)
                                                                 //`---------------------------------------------'                    `--------------------------------------------'
   ),
 
@@ -95,7 +95,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [L3] = LAYOUT_split_3x6_3(
     //,-----------------------------------------------------------------------------------------.                                                   ,-----------------------------------------------------------------------------------------.
-         EEPROM_RESET,  KC_MS_ACCEL0,KC_MEDIA_PLAY_PAUSE,KC_MEDIA_PREV_TRACK,KC_MEDIA_NEXT_TRACK,TG(BASE_ALT),                                          KC_MS_WH_LEFT, KC_MS_WH_DOWN,   KC_MS_WH_UP,KC_MS_WH_RIGHT,       RGB_TOG,KC_SYSTEM_POWER,
+   TD(TD_OLED_TOGGLE),  KC_MS_ACCEL0,KC_MEDIA_PLAY_PAUSE,KC_MEDIA_PREV_TRACK,KC_MEDIA_NEXT_TRACK,TG(BASE_ALT),                                        KC_MS_WH_LEFT, KC_MS_WH_DOWN,   KC_MS_WH_UP,KC_MS_WH_RIGHT,       RGB_TOG,KC_SYSTEM_POWER,
     //|--------------+--------------+--------------+--------------+--------------+--------------|                                                   |--------------+--------------+--------------+--------------+--------------+--------------|
  MAGIC_TOGGLE_CTL_GUI,  KC_MS_ACCEL1,    KC_MS_BTN3,    KC_MS_BTN2,    KC_MS_BTN1,    KC_MS_BTN4,                                                        KC_MS_LEFT,    KC_MS_DOWN,      KC_MS_UP,   KC_MS_RIGHT,       RGB_SPI,KC_SYSTEM_SLEEP,
     //|--------------+--------------+--------------+--------------+--------------+--------------|                                                   |--------------+--------------+--------------+--------------+--------------+--------------|
@@ -109,7 +109,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //,-----------------------------------------------------------------------------------------.                                                   ,-----------------------------------------------------------------------------------------.
               _______,         KC_F1,         KC_F2,         KC_F3,         KC_F4,         KC_F5,                                                             KC_F6,         KC_F7,         KC_F8,         KC_F9,        KC_F10,      KC_POWER,
     //|--------------+--------------+--------------+--------------+--------------+--------------|                                                   |--------------+--------------+--------------+--------------+--------------+--------------|
-              _______,        KC_F11,        KC_F12,        KC_F13,        KC_F14,        KC_F15,                                                            KC_F16,        KC_F17,        KC_F18,        KC_F19,        KC_F20,       _______,
+  MAGIC_EE_HANDS_LEFT,        KC_F11,        KC_F12,        KC_F13,        KC_F14,        KC_F15,                                                            KC_F16,        KC_F17,        KC_F18,        KC_F19,        KC_F20,MAGIC_EE_HANDS_RIGHT,
     //|--------------+--------------+--------------+--------------+--------------+--------------|                                                   |--------------+--------------+--------------+--------------+--------------+--------------|
               _______,        KC_F21,        KC_F22,        KC_F23,        KC_F24,       _______,                                             DYN_MACRO_PLAY1,DYN_MACRO_PLAY2,DYN_REC_START1,DYN_REC_START2, DYN_REC_STOP,       _______,
     //|--------------+--------------+--------------+--------------+--------------+--------------+---------------|                    |--------------+--------------+--------------+--------------+--------------+--------------+--------------|
