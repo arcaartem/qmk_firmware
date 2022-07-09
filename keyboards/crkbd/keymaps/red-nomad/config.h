@@ -71,9 +71,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #    define RGB_MATRIX_SPD_STEP 4
 
 // #    define ENABLE_RGB_MATRIX_SOLID_COLOR
-#    define ENABLE_RGB_MATRIX_ALPHAS_MODS
-#    define ENABLE_RGB_MATRIX_SOLID_REACTIVE_SIMPLE
-#    define ENABLE_RGB_MATRIX_SOLID_REACTIVE
+#   undef ENABLE_RGB_MATRIX_ALPHAS_MODS
+#   define ENABLE_RGB_MATRIX_SOLID_REACTIVE_SIMPLE
+#   define ENABLE_RGB_MATRIX_SOLID_REACTIVE
 #   undef ENABLE_RGB_MATRIX_GRADIENT_UP_DOWN
 #   undef ENABLE_RGB_MATRIX_GRADIENT_LEFT_RIGHT
 #   undef ENABLE_RGB_MATRIX_BREATHING
@@ -91,20 +91,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #   undef ENABLE_RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS
 #   undef ENABLE_RGB_MATRIX_SPLASH
 #   undef ENABLE_RGB_MATRIX_SOLID_SPLAS
+
 #endif
 
 #ifdef CONSOLE_ENABLE
     #define DEBUG_MATRIX_SCAN_RATE
 #endif
 
-#define OLED_DISABLE_TIMEOUT
+//#define OLED_DISABLE_TIMEOUT
 #define OLED_FONT_H "keyboards/crkbd/lib/customfont.c"
 
 #define SPLIT_USB_TIMEOUT 6000
 #define SPLIT_USB_TIMEOUT_POLL 100
-#define SPLIT_TRANSPORT_MIRROR
 #define SPLIT_LAYER_STATE_ENABLE
 #define SPLIT_MODS_ENABLE
+#define SPLIT_OLED_ENABLE
 
 #define IGNORE_MOD_TAP_INTERRUPT
 
