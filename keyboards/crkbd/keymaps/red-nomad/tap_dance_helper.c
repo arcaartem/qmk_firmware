@@ -4,10 +4,34 @@
 
 extern int oled_state;
 
+    /*TD_LSFT_HYPR,*/
+    /*TD_LALT_MEH,*/
+    /*TD_LALT_RALT,*/
+    /*TD_RALT_MEH,*/
+    /*TD_RALT_GUI,*/
+    /*TD_LAYER_QUOTE,*/
+    /*TD_LAYER_SLASH,*/
+    /*TD_LAYER_MEH,*/
+    /*TD_OLED_TOGGLE,*/
+
 // Create an instance of 'td_tap_t' for the 'x' tap dance.
-static td_tap_t xtap_state = {
-    .is_press_action = true,
-    .state = TD_NONE
+static td_tap_t xtap_state[] = {
+    [TD_LSFT_HYPR] = {
+        .is_press_action = true,
+        .state = TD_NONE
+    },
+    [TD_LALT_MEH] = {
+        .is_press_action = true,
+        .state = TD_NONE
+    },
+    [TD_LAYER_SLASH] = {
+        .is_press_action = true,
+        .state = TD_NONE
+    },
+    [TD_OLED_TOGGLE] = {
+        .is_press_action = true,
+        .state = TD_NONE
+    },
 };
 
 td_state_t cur_dance(qk_tap_dance_state_t *state) {
@@ -24,8 +48,8 @@ td_state_t cur_dance(qk_tap_dance_state_t *state) {
 }
 
 void layer_slash_dance_finished(qk_tap_dance_state_t *state, void *user_data) {
-    xtap_state.state = cur_dance(state);
-    switch (xtap_state.state) {
+    xtap_state[TD_LAYER_SLASH].state = cur_dance(state);
+    switch (xtap_state[TD_LAYER_SLASH].state) {
         case TD_SINGLE_TAP:
             register_code(KC_BACKSLASH);
             break;
@@ -65,7 +89,7 @@ void layer_slash_dance_finished(qk_tap_dance_state_t *state, void *user_data) {
 }
 
 void layer_slash_dance_reset(qk_tap_dance_state_t *state, void *user_data) {
-    switch (xtap_state.state) {
+    switch (xtap_state[TD_LAYER_SLASH].state) {
         case TD_SINGLE_TAP:
             unregister_code(KC_BACKSLASH);
             break;
@@ -90,12 +114,12 @@ void layer_slash_dance_reset(qk_tap_dance_state_t *state, void *user_data) {
         default:
         break;
     }
-    xtap_state.state = TD_NONE;
+    xtap_state[TD_LAYER_SLASH].state = TD_NONE;
 }
 
 void oled_toggle_dance_finished(qk_tap_dance_state_t *state, void *user_data) {
-    xtap_state.state = cur_dance(state);
-    switch (xtap_state.state) {
+    xtap_state[TD_OLED_TOGGLE].state = cur_dance(state);
+    switch (xtap_state[TD_OLED_TOGGLE].state) {
         case TD_SINGLE_TAP: oled_state ^= true;
         default:
         break;
@@ -103,9 +127,75 @@ void oled_toggle_dance_finished(qk_tap_dance_state_t *state, void *user_data) {
 }
 
 void oled_toggle_dance_reset(qk_tap_dance_state_t *state, void *user_data) {
-    switch (xtap_state.state) {
+    switch (xtap_state[TD_OLED_TOGGLE].state) {
         default:
         break;
     }
-    xtap_state.state = TD_NONE;
+    xtap_state[TD_OLED_TOGGLE].state = TD_NONE;
+}
+
+void lsft_hyper_dance_finished(qk_tap_dance_state_t *state, void *user_data) {
+    xtap_state[TD_LSFT_HYPR].state = cur_dance(state);
+    switch (xtap_state[TD_LSFT_HYPR].state) {
+        case TD_SINGLE_TAP:
+        case TD_SINGLE_HOLD:
+            register_code(KC_LSFT);
+        break;
+        case TD_DOUBLE_TAP:
+        case TD_DOUBLE_HOLD:
+            register_code(KC_LGUI);
+            register_code(KC_LCTL);
+            register_code(KC_LALT);
+            register_code(KC_LSFT);
+        default:
+        break;
+    }
+}
+
+void lsft_hyper_dance_reset(qk_tap_dance_state_t *state, void *user_data) {
+    switch (xtap_state[TD_LSFT_HYPR].state) {
+        case TD_SINGLE_TAP:
+        case TD_SINGLE_HOLD:
+            unregister_code(KC_LSFT);
+        break;
+        case TD_DOUBLE_TAP:
+        case TD_DOUBLE_HOLD:
+            unregister_code(KC_LGUI);
+            unregister_code(KC_LCTL);
+            unregister_code(KC_LALT);
+            unregister_code(KC_LSFT);
+        default:
+        break;
+    }
+    xtap_state[TD_LSFT_HYPR].state = TD_NONE;
+}
+
+void lalt_meh_dance_finished(qk_tap_dance_state_t *state, void *user_data) {
+    xtap_state[TD_LALT_MEH].state = cur_dance(state);
+    switch (xtap_state[TD_LALT_MEH].state) {
+        case TD_SINGLE_HOLD:
+            register_code(KC_LALT);
+        break;
+        case TD_DOUBLE_HOLD:
+            register_code(KC_LCTL);
+            register_code(KC_LALT);
+            register_code(KC_LSFT);
+        default:
+        break;
+    }
+}
+
+void lalt_meh_dance_reset(qk_tap_dance_state_t *state, void *user_data) {
+    switch (xtap_state[TD_LALT_MEH].state) {
+        case TD_SINGLE_HOLD:
+            unregister_code(KC_LALT);
+        break;
+        case TD_DOUBLE_HOLD:
+            unregister_code(KC_LCTL);
+            unregister_code(KC_LALT);
+            unregister_code(KC_LSFT);
+        default:
+        break;
+    }
+    xtap_state[TD_LALT_MEH].state = TD_NONE;
 }
