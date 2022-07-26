@@ -1,11 +1,12 @@
 #include QMK_KEYBOARD_H
 #include "layers.h"
+#include "oled_helper.h"
 
 #ifdef OLED_ENABLE
 
 #define OLED_USER_TIMEOUT 30000
 
-int oled_state = 1;
+extern int custom_oled_power_state;
 uint8_t hid_buffers[2][32] = { 0 };
 uint8_t hid_buffer_lengths[2] = { 0 };
 char keylog_str[24] = {};
@@ -154,7 +155,7 @@ void oled_render_logo(void) {
     oled_write_P(crkbd_logo, false);
 }
 bool oled_task_user(void) {
-    if (oled_state == 0) {
+    if (custom_oled_power_state == 0) {
         oled_off();
         return false;
     }

@@ -2,17 +2,7 @@
 #include "tap_dance_helper.h"
 #include "layers.h"
 
-extern int oled_state;
-
-    /*TD_LSFT_HYPR,*/
-    /*TD_LALT_MEH,*/
-    /*TD_LALT_RALT,*/
-    /*TD_RALT_MEH,*/
-    /*TD_RALT_GUI,*/
-    /*TD_LAYER_QUOTE,*/
-    /*TD_LAYER_SLASH,*/
-    /*TD_LAYER_MEH,*/
-    /*TD_OLED_TOGGLE,*/
+extern int custom_oled_power_state;
 
 // Create an instance of 'td_tap_t' for the 'x' tap dance.
 static td_tap_t xtap_state[] = {
@@ -120,7 +110,7 @@ void layer_slash_dance_reset(qk_tap_dance_state_t *state, void *user_data) {
 void oled_toggle_dance_finished(qk_tap_dance_state_t *state, void *user_data) {
     xtap_state[TD_OLED_TOGGLE].state = cur_dance(state);
     switch (xtap_state[TD_OLED_TOGGLE].state) {
-        case TD_SINGLE_TAP: oled_state ^= true;
+        case TD_SINGLE_TAP: custom_oled_power_state ^= 1;
         default:
         break;
     }
