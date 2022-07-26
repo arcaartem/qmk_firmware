@@ -1,3 +1,4 @@
+OLED_ENABLE                  =  yes
 RGBLIGHT_ENABLE              =  no
 TAP_DANCE_ENABLE             =  yes
 RAW_ENABLE                   =  no
