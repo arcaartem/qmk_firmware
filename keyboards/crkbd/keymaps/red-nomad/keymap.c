@@ -23,7 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "tap_dance_helper.h"
 #include "layers.h"
 
-qk_tap_dance_action_t tap_dance_actions[] = {
+tap_dance_action_t tap_dance_actions[] = {
     [TD_LSFT_HYPR] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, lsft_hyper_dance_finished, lsft_hyper_dance_reset),
     [TD_LALT_MEH] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, lalt_meh_dance_finished, lalt_meh_dance_reset),
     [TD_LALT_RALT] = ACTION_TAP_DANCE_DOUBLE(KC_LALT, KC_RALT),
