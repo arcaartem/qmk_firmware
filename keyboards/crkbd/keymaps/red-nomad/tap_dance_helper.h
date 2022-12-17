@@ -30,15 +30,15 @@ enum {
     TD_OLED_TOGGLE,
 };
 
-td_state_t cur_dance(qk_tap_dance_state_t *state);
+td_state_t cur_dance(tap_dance_state_t *state);
 
-void layer_slash_dance_finished(qk_tap_dance_state_t *state, void *user_data);
-void layer_slash_dance_reset(qk_tap_dance_state_t *state, void *user_data);
-void oled_toggle_dance_finished(qk_tap_dance_state_t *state, void *user_data);
-void oled_toggle_dance_reset(qk_tap_dance_state_t *state, void *user_data);
-void lsft_hyper_dance_finished(qk_tap_dance_state_t *state, void *user_data);
-void lsft_hyper_dance_reset(qk_tap_dance_state_t *state, void *user_data);
-void lalt_meh_dance_finished(qk_tap_dance_state_t *state, void *user_data);
-void lalt_meh_dance_reset(qk_tap_dance_state_t *state, void *user_data);
+void layer_slash_dance_finished(tap_dance_state_t *state, void *user_data);
+void layer_slash_dance_reset(tap_dance_state_t *state, void *user_data);
+void oled_toggle_dance_finished(tap_dance_state_t *state, void *user_data);
+void oled_toggle_dance_reset(tap_dance_state_t *state, void *user_data);
+void lsft_hyper_dance_finished(tap_dance_state_t *state, void *user_data);
+void lsft_hyper_dance_reset(tap_dance_state_t *state, void *user_data);
+void lalt_meh_dance_finished(tap_dance_state_t *state, void *user_data);
+void lalt_meh_dance_reset(tap_dance_state_t *state, void *user_data);
 
 #endif
