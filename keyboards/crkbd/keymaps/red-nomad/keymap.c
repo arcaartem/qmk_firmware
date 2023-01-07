@@ -24,24 +24,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "layers.h"
 
 tap_dance_action_t tap_dance_actions[] = {
-    [TD_LSFT_HYPR] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, lsft_hyper_dance_finished, lsft_hyper_dance_reset),
-    [TD_LALT_MEH] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, lalt_meh_dance_finished, lalt_meh_dance_reset),
+    [TD_LSFT_MEH] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, lsft_meh_dance_finished, lsft_meh_dance_reset),
+    [TD_LALT_EH] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, lalt_eh_dance_finished, lalt_eh_dance_reset),
     [TD_LALT_RALT] = ACTION_TAP_DANCE_DOUBLE(KC_LALT, KC_RALT),
     [TD_RALT_GUI] = ACTION_TAP_DANCE_DOUBLE(KC_RALT, KC_LGUI),
-    [TD_LAYER_SLASH] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, layer_slash_dance_finished, layer_slash_dance_reset),
     [TD_OLED_TOGGLE] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, oled_toggle_dance_finished, oled_toggle_dance_reset),
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [BASE] = LAYOUT_split_3x6_3(
     //,-----------------------------------------------------------------------------------------.                                                   ,-----------------------------------------------------------------------------------------.
-        LT(L4,KC_TAB),          KC_Q,          KC_W,          KC_E,          KC_R,          KC_T,                                                              KC_Y,          KC_U,          KC_I,          KC_O,          KC_P,  KC_BACKSPACE,
+     TD(TD_TAB_HYPER),          KC_Q,          KC_W,          KC_E,          KC_R,          KC_T,                                                              KC_Y,          KC_U,          KC_I,          KC_O,          KC_P,  KC_BACKSPACE,
     //|--------------+--------------+--------------+--------------+--------------+--------------|                                                   |--------------+--------------+--------------+--------------+--------------+--------------|
        LCTL_T(KC_ESC),          KC_A,          KC_S,          KC_D,          KC_F,          KC_G,                                                              KC_H,          KC_J,          KC_K,          KC_L,       KC_SCLN,        KC_ENT,
     //|--------------+--------------+--------------+--------------+--------------+--------------|                                                   |--------------+--------------+--------------+--------------+--------------+--------------|
-     TD(TD_LSFT_HYPR),          KC_Z,          KC_X,          KC_C,          KC_V,          KC_B,                                                              KC_N,          KC_M,       KC_COMM,        KC_DOT,       KC_SLSH,       KC_RSFT,
+     TD(TD_LSFT_MEH),          KC_Z,          KC_X,          KC_C,          KC_V,          KC_B,                                                              KC_N,          KC_M,       KC_COMM,        KC_DOT,       KC_SLSH,       KC_RSFT,
     //|--------------+--------------+--------------+--------------+--------------+--------------+---------------|                    |--------------+--------------+--------------+--------------+--------------+--------------+--------------|
-                                                                  TD(TD_LALT_MEH),LT(L2,KC_QUOTE),LGUI_T(KC_SPC),                    LCTL_T(KC_SPC),LT(L2,KC_SLASH),TD(TD_LALT_RALT)
+                                                                  TD(TD_LALT_EH),LT(L2,KC_QUOTE),LGUI_T(KC_SPC),                    LCTL_T(KC_SPC),LT(L2,KC_SLASH),TD(TD_LALT_RALT)
                                                                 //`---------------------------------------------'                    `--------------------------------------------'
   ),
 
