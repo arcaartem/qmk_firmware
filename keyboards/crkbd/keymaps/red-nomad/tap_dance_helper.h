@@ -19,8 +19,9 @@ typedef struct {
 } td_tap_t;
 
 enum {
-    TD_LSFT_HYPR,
-    TD_LALT_MEH,
+    TD_TAB_HYPER,
+    TD_LSFT_MEH,
+    TD_LALT_EH,
     TD_LALT_RALT,
     TD_RALT_MEH,
     TD_RALT_GUI,
@@ -32,13 +33,13 @@ enum {
 
 td_state_t cur_dance(tap_dance_state_t *state);
 
-void layer_slash_dance_finished(tap_dance_state_t *state, void *user_data);
-void layer_slash_dance_reset(tap_dance_state_t *state, void *user_data);
 void oled_toggle_dance_finished(tap_dance_state_t *state, void *user_data);
 void oled_toggle_dance_reset(tap_dance_state_t *state, void *user_data);
-void lsft_hyper_dance_finished(tap_dance_state_t *state, void *user_data);
-void lsft_hyper_dance_reset(tap_dance_state_t *state, void *user_data);
-void lalt_meh_dance_finished(tap_dance_state_t *state, void *user_data);
-void lalt_meh_dance_reset(tap_dance_state_t *state, void *user_data);
+void tab_hyper_dance_finished(tap_dance_state_t *state, void *user_data);
+void tab_hyper_dance_reset(tap_dance_state_t *state, void *user_data);
+void lsft_meh_dance_finished(tap_dance_state_t *state, void *user_data);
+void lsft_meh_dance_reset(tap_dance_state_t *state, void *user_data);
+void lalt_eh_dance_finished(tap_dance_state_t *state, void *user_data);
+void lalt_eh_dance_reset(tap_dance_state_t *state, void *user_data);
 
 #endif
