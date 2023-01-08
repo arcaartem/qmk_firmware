@@ -61,13 +61,13 @@ void tab_hyper_dance_finished(tap_dance_state_t *state, void *user_data) {
             register_code(KC_TAB);
         break;
         case TD_SINGLE_HOLD:
+            layer_on(L4);
+        break;
+        case TD_DOUBLE_HOLD:
             register_code(KC_LGUI);
             register_code(KC_LCTL);
             register_code(KC_LALT);
             register_code(KC_LSFT);
-        break;
-        case TD_DOUBLE_HOLD:
-            layer_on(L4);
         break;
         default:
         break;
@@ -78,14 +78,15 @@ void tab_hyper_dance_reset(tap_dance_state_t *state, void *user_data) {
     switch (xtap_state[TD_TAB_HYPER].state) {
         case TD_SINGLE_TAP:
             unregister_code(KC_TAB);
+        break;
         case TD_SINGLE_HOLD:
+            layer_off(L4);
+        break;
+        case TD_DOUBLE_HOLD:
             unregister_code(KC_LGUI);
             unregister_code(KC_LCTL);
             unregister_code(KC_LALT);
             unregister_code(KC_LSFT);
-        break;
-        case TD_DOUBLE_HOLD:
-            layer_off(L4);
         break;
         default:
         break;
