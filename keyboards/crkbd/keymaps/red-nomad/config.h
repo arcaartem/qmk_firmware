@@ -123,7 +123,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //#define OLED_DISABLE_TIMEOUT
 #define OLED_FONT_H "keyboards/crkbd/lib/customfont.c"
 
-#define SPLIT_USB_TIMEOUT 6000
+#define SPLIT_USB_TIMEOUT 3000
 #define SPLIT_USB_TIMEOUT_POLL 100
 #define SPLIT_LAYER_STATE_ENABLE
 #define SPLIT_MODS_ENABLE
