@@ -8,9 +8,10 @@ typedef enum {
     TD_SINGLE_HOLD,
     TD_DOUBLE_TAP,
     TD_DOUBLE_HOLD,
-    TD_DOUBLE_SINGLE_TAP, // Send two single taps
+    TD_DOUBLE_SINGLE_TAP,
     TD_TRIPLE_TAP,
-    TD_TRIPLE_HOLD
+    TD_TRIPLE_HOLD,
+    TD_TRIPLE_SINGLE_TAP
 } td_state_t;
 
 typedef struct {
@@ -19,7 +20,7 @@ typedef struct {
 } td_tap_t;
 
 enum {
-    TD_TAB_HYPER,
+    TD_ESC_HYPER,
     TD_LSFT_MEH,
     TD_LALT_EH,
     TD_LALT_RALT,
@@ -35,8 +36,8 @@ td_state_t cur_dance(tap_dance_state_t *state);
 
 void oled_toggle_dance_finished(tap_dance_state_t *state, void *user_data);
 void oled_toggle_dance_reset(tap_dance_state_t *state, void *user_data);
-void tab_hyper_dance_finished(tap_dance_state_t *state, void *user_data);
-void tab_hyper_dance_reset(tap_dance_state_t *state, void *user_data);
+void esc_hyper_dance_finished(tap_dance_state_t *state, void *user_data);
+void esc_hyper_dance_reset(tap_dance_state_t *state, void *user_data);
 void lsft_meh_dance_finished(tap_dance_state_t *state, void *user_data);
 void lsft_meh_dance_reset(tap_dance_state_t *state, void *user_data);
 void lalt_eh_dance_finished(tap_dance_state_t *state, void *user_data);
