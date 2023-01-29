@@ -6,7 +6,7 @@ extern int custom_oled_power_state;
 
 // Create an instance of 'td_tap_t' for the 'x' tap dance.
 static td_tap_t xtap_state[] = {
-    [TD_TAB_HYPER] = {
+    [TD_ESC_HYPER] = {
         .is_press_action = true,
         .state = TD_NONE
     },
@@ -29,9 +29,13 @@ td_state_t cur_dance(tap_dance_state_t *state) {
         case 1:
             return state->pressed ? TD_SINGLE_HOLD : TD_SINGLE_TAP;
         case 2:
-            return state->pressed ? TD_DOUBLE_HOLD : TD_DOUBLE_TAP;
+            if (state->interrupted) return TD_DOUBLE_SINGLE_TAP;
+            if (state->pressed) return TD_DOUBLE_HOLD;
+            return TD_DOUBLE_TAP;
         case 3:
-            return state->pressed ? TD_TRIPLE_HOLD : TD_TRIPLE_TAP;
+            if (state->interrupted) return TD_TRIPLE_SINGLE_TAP;
+            if (state->pressed) return TD_TRIPLE_HOLD;
+            return TD_TRIPLE_TAP;
         default:
             return TD_UNKNOWN;
     }
@@ -54,14 +58,19 @@ void oled_toggle_dance_reset(tap_dance_state_t *state, void *user_data) {
     xtap_state[TD_OLED_TOGGLE].state = TD_NONE;
 }
 
-void tab_hyper_dance_finished(tap_dance_state_t *state, void *user_data) {
-    xtap_state[TD_TAB_HYPER].state = cur_dance(state);
-    switch (xtap_state[TD_TAB_HYPER].state) {
+void esc_hyper_dance_finished(tap_dance_state_t *state, void *user_data) {
+    xtap_state[TD_ESC_HYPER].state = cur_dance(state);
+    switch (xtap_state[TD_ESC_HYPER].state) {
         case TD_SINGLE_TAP:
-            register_code(KC_TAB);
+            register_code(KC_ESC);
         break;
         case TD_SINGLE_HOLD:
-            layer_on(L4);
+            register_code(KC_LCTL);
+        break;
+        case TD_DOUBLE_TAP:
+            register_code(KC_ESC);
+            unregister_code(KC_ESC);
+            register_code(KC_ESC);
         break;
         case TD_DOUBLE_HOLD:
             register_code(KC_LGUI);
@@ -74,13 +83,14 @@ void tab_hyper_dance_finished(tap_dance_state_t *state, void *user_data) {
     }
 }
 
-void tab_hyper_dance_reset(tap_dance_state_t *state, void *user_data) {
-    switch (xtap_state[TD_TAB_HYPER].state) {
+void esc_hyper_dance_reset(tap_dance_state_t *state, void *user_data) {
+    switch (xtap_state[TD_ESC_HYPER].state) {
         case TD_SINGLE_TAP:
-            unregister_code(KC_TAB);
+        case TD_DOUBLE_TAP:
+            unregister_code(KC_ESC);
         break;
         case TD_SINGLE_HOLD:
-            layer_off(L4);
+            unregister_code(KC_LCTL);
         break;
         case TD_DOUBLE_HOLD:
             unregister_code(KC_LGUI);
@@ -91,7 +101,7 @@ void tab_hyper_dance_reset(tap_dance_state_t *state, void *user_data) {
         default:
         break;
     }
-    xtap_state[TD_TAB_HYPER].state = TD_NONE;
+    xtap_state[TD_ESC_HYPER].state = TD_NONE;
 }
 
 void lsft_meh_dance_finished(tap_dance_state_t *state, void *user_data) {
