@@ -21,8 +21,9 @@ uint16_t get_top_layer(void) {
 
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
   if (is_keyboard_master()) {
-    return OLED_ROTATION_0;
+    return OLED_ROTATION_270;
   }
+
   return OLED_ROTATION_180;
 }
 
@@ -44,30 +45,30 @@ void raw_hid_receive(uint8_t *data, uint8_t length) {
 
 void print_hex_string(uint8_t value) {
     char layer_state_buf[7] = {};
-    snprintf(layer_state_buf, sizeof(layer_state_buf), "0x%04x", layer_state);
-    oled_write(layer_state_buf, false);
+    snprintf(layer_state_buf, sizeof(layer_state_buf), "%04x", layer_state);
+    oled_write_ln(layer_state_buf, false);
 }
 
 void oled_render_layer_state(void) {
-    oled_write_P(PSTR("Layer: "), false);
+    oled_write_P(PSTR("Layer"), false);
     switch (get_top_layer()) {
         case 0:
         case L_BASE:
         case L_BASE_ALT:
-            oled_write_P(PSTR("Base"), false);
+            oled_write_P(PSTR("BASE "), true);
             break;
         case L_LOWER:
         case L_LOWER_ALT:
-            oled_write_P(PSTR("Lower"), false);
+            oled_write_P(PSTR("LOWER"), true);
             break;
         case L_RAISE:
-            oled_write_P(PSTR("Raise"), false);
+            oled_write_P(PSTR("RAISE"), true);
             break;
         case L_ADJUST:
-            oled_write_P(PSTR("Device"), false);
+            oled_write_P(PSTR("MEDIA"), true);
             break;
         case L_FUNCTION:
-            oled_write_P(PSTR("F Keys"), false);
+            oled_write_P(PSTR("FKEYS"), true);
             break;
         default:
             print_hex_string(layer_state);
@@ -75,9 +76,11 @@ void oled_render_layer_state(void) {
     }
 
     if (layer_state & L_BASE_ALT)
-        oled_write_P(PSTR("(*)"), false);
+        oled_write_ln_P(PSTR(" (*)"), false);
+    else
+        oled_write_ln_P(PSTR(""), false);
 
-    oled_write_ln_P(PSTR(""), false);
+    oled_write_P(PSTR("-----"), false);
 }
 
 void oled_print_mod(uint16_t mods, uint16_t mod_mask, char * indicator) {
@@ -89,20 +92,21 @@ void oled_print_mod(uint16_t mods, uint16_t mod_mask, char * indicator) {
 
 void oled_render_mod_state(void) {
     uint16_t mods = get_mods();
-    oled_write_P(PSTR("Mods: "), false);
+    oled_write_P(PSTR("Mods "), false);
     oled_write_P(PSTR("G"), ((mods & MOD_MASK_GUI) > 0));
     oled_write_P(PSTR("C"), ((mods & MOD_MASK_CTRL) > 0));
     oled_write_P(PSTR("A"), ((mods & MOD_MASK_ALT) > 0));
-    oled_write_P(PSTR("S"), ((mods & MOD_MASK_SHIFT) > 0));
-    oled_write_P(PSTR(" "), false);
+    oled_write_ln_P(PSTR("S"), ((mods & MOD_MASK_SHIFT) > 0));
+    oled_write_P(PSTR("-----"), false);
 }
 
 void oled_render_host_led_status(void) {
     led_t led_state = host_keyboard_led_state();
-    oled_write_P(PSTR("Leds: "), false);
+    oled_write_P(PSTR("Leds "), false);
     oled_write_P(PSTR("N"), led_state.num_lock);
     oled_write_P(PSTR("C"), led_state.caps_lock);
     oled_write_ln_P(PSTR("S"), led_state.scroll_lock);
+    oled_write_P(PSTR("-----"), false);
 }
 
 void oled_render_layer_mod_host_state(void) {
@@ -128,12 +132,13 @@ void set_keylog(uint16_t keycode, keyrecord_t *record) {
   }
 
   // update keylog
-  snprintf(keylog_str, sizeof(keylog_str), "%dx%d k[%04x]:%c",
-           record->event.key.row, record->event.key.col,
-           rawKeycode, name);
+  snprintf(keylog_str, sizeof(keylog_str), " '%c'  %dx%d %05x",
+           name, record->event.key.row, record->event.key.col,
+           rawKeycode);
 }
 
 void oled_render_keylog(void) {
+    oled_write_ln_P(PSTR("Key"), false);
     oled_write(keylog_str, false);
 }
 
@@ -182,7 +187,6 @@ bool oled_task_user(void) {
         /*oled_on();*/
     /*}*/
 
-#
     if (is_keyboard_master()) {
         oled_render_layer_mod_host_state();
         oled_render_keylog();
