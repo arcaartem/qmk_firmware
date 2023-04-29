@@ -129,6 +129,4 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define SPLIT_MODS_ENABLE
 #define SPLIT_OLED_ENABLE
 
-#define IGNORE_MOD_TAP_INTERRUPT
-
 #undef WPM_ENABLE
