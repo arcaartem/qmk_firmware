@@ -29,13 +29,10 @@ enum {
     TD_LAYER_QUOTE,
     TD_LAYER_SLASH,
     TD_LAYER_MEH,
-    TD_OLED_TOGGLE,
 };
 
 td_state_t cur_dance(tap_dance_state_t *state);
 
-void oled_toggle_dance_finished(tap_dance_state_t *state, void *user_data);
-void oled_toggle_dance_reset(tap_dance_state_t *state, void *user_data);
 void esc_hyper_dance_finished(tap_dance_state_t *state, void *user_data);
 void esc_hyper_dance_reset(tap_dance_state_t *state, void *user_data);
 void lsft_meh_dance_finished(tap_dance_state_t *state, void *user_data);

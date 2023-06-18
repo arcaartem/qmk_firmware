@@ -18,10 +18,6 @@ static td_tap_t xtap_state[] = {
         .is_press_action = true,
         .state = TD_NONE
     },
-    [TD_OLED_TOGGLE] = {
-        .is_press_action = true,
-        .state = TD_NONE
-    },
 };
 
 td_state_t cur_dance(tap_dance_state_t *state) {
@@ -39,23 +35,6 @@ td_state_t cur_dance(tap_dance_state_t *state) {
         default:
             return TD_UNKNOWN;
     }
-}
-
-void oled_toggle_dance_finished(tap_dance_state_t *state, void *user_data) {
-    xtap_state[TD_OLED_TOGGLE].state = cur_dance(state);
-    switch (xtap_state[TD_OLED_TOGGLE].state) {
-        case TD_SINGLE_TAP: custom_oled_power_state ^= 1;
-        default:
-        break;
-    }
-}
-
-void oled_toggle_dance_reset(tap_dance_state_t *state, void *user_data) {
-    switch (xtap_state[TD_OLED_TOGGLE].state) {
-        default:
-        break;
-    }
-    xtap_state[TD_OLED_TOGGLE].state = TD_NONE;
 }
 
 void esc_hyper_dance_finished(tap_dance_state_t *state, void *user_data) {
