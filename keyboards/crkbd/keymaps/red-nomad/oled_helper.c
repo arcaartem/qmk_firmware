@@ -6,7 +6,6 @@
 
 #define OLED_USER_TIMEOUT 30000
 
-extern int custom_oled_power_state;
 uint8_t hid_buffers[2][32] = { 0 };
 uint8_t hid_buffer_lengths[2] = { 0 };
 char keylog_str[24] = {};
@@ -58,14 +57,16 @@ void oled_render_layer_state(void) {
             oled_write_P(PSTR("BASE "), true);
             break;
         case L_LOWER:
-        case L_LOWER_ALT:
             oled_write_P(PSTR("LOWER"), true);
             break;
         case L_RAISE:
             oled_write_P(PSTR("RAISE"), true);
             break;
-        case L_ADJUST:
+        case L_MEDIA:
             oled_write_P(PSTR("MEDIA"), true);
+            break;
+        case L_MOUSE:
+            oled_write_P(PSTR("MOUSE"), true);
             break;
         case L_FUNCTION:
             oled_write_P(PSTR("FKEYS"), true);
@@ -167,10 +168,6 @@ void oled_render_logo(void) {
     oled_write_P(crkbd_logo, false);
 }
 bool oled_task_user(void) {
-    if (custom_oled_power_state == 0) {
-        oled_off();
-        return false;
-    }
 
 /*#ifdef ENCODER_ENABLE*/
     /*bool is_activity_elapsed = (last_matrix_activity_elapsed() > OLED_USER_TIMEOUT && last_encoder_activity_elapsed() > OLED_USER_TIMEOUT);*/

@@ -2,8 +2,6 @@
 #include "tap_dance_helper.h"
 #include "layers.h"
 
-extern int custom_oled_power_state;
-
 // Create an instance of 'td_tap_t' for the 'x' tap dance.
 static td_tap_t xtap_state[] = {
     [TD_ESC_HYPER] = {
