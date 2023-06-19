@@ -20,24 +20,14 @@ typedef struct {
 } td_tap_t;
 
 enum {
-    TD_ESC_HYPER,
     TD_LSFT_MEH,
     TD_LALT_EH,
     TD_LALT_RALT,
     TD_RALT_MEH,
     TD_RALT_GUI,
-    TD_LAYER_QUOTE,
-    TD_LAYER_SLASH,
-    TD_LAYER_MEH,
+    TD_LSFT_HYPR
 };
 
 td_state_t cur_dance(tap_dance_state_t *state);
-
-void esc_hyper_dance_finished(tap_dance_state_t *state, void *user_data);
-void esc_hyper_dance_reset(tap_dance_state_t *state, void *user_data);
-void lsft_meh_dance_finished(tap_dance_state_t *state, void *user_data);
-void lsft_meh_dance_reset(tap_dance_state_t *state, void *user_data);
-void lalt_eh_dance_finished(tap_dance_state_t *state, void *user_data);
-void lalt_eh_dance_reset(tap_dance_state_t *state, void *user_data);
 
 #endif

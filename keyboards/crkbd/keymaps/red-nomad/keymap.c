@@ -24,11 +24,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "layers.h"
 
 tap_dance_action_t tap_dance_actions[] = {
-    [TD_ESC_HYPER] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, esc_hyper_dance_finished, esc_hyper_dance_reset),
-    [TD_LSFT_MEH] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, lsft_meh_dance_finished, lsft_meh_dance_reset),
-    [TD_LALT_EH] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, lalt_eh_dance_finished, lalt_eh_dance_reset),
     [TD_LALT_RALT] = ACTION_TAP_DANCE_DOUBLE(KC_LALT, KC_RALT),
     [TD_RALT_GUI] = ACTION_TAP_DANCE_DOUBLE(KC_RALT, KC_LGUI),
+    [TD_LSFT_HYPR] = ACTION_TAP_DANCE_DOUBLE(KC_LSFT, KC_HYPR),
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -36,11 +34,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //,-----------------------------------------------------------------------------------------.                                                   ,-----------------------------------------------------------------------------------------.
         LT(L5,KC_TAB),          KC_Q,          KC_W,          KC_E,  LT(L4, KC_R),          KC_T,                                                              KC_Y,          KC_U,          KC_I,          KC_O,          KC_P,  KC_BACKSPACE,
     //|--------------+--------------+--------------+--------------+--------------+--------------|                                                   |--------------+--------------+--------------+--------------+--------------+--------------|
-     TD(TD_ESC_HYPER),          KC_A,          KC_S,          KC_D,   LT(L1,KC_F),          KC_G,                                                              KC_H,          KC_J,          KC_K,          KC_L,       KC_SCLN,        KC_ENT,
+       LCTL_T(KC_ESC),          KC_A,   MEH_T(KC_S),   LSA_T(KC_D),   LT(L1,KC_F),          KC_G,                                                              KC_H,          KC_J,          KC_K,          KC_L,       KC_SCLN,        KC_ENT,
     //|--------------+--------------+--------------+--------------+--------------+--------------|                                                   |--------------+--------------+--------------+--------------+--------------+--------------|
-      TD(TD_LSFT_MEH),          KC_Z,          KC_X,          KC_C,  LT(L3, KC_V),          KC_B,                                                              KC_N,          KC_M,       KC_COMM,        KC_DOT,       KC_SLSH,       KC_RSFT,
+     TD(TD_LSFT_HYPR),          KC_Z,          KC_X,          KC_C,  LT(L3, KC_V),  HYPR_T(KC_B),                                                              KC_N,          KC_M,       KC_COMM,        KC_DOT,       KC_SLSH,       KC_RSFT,
     //|--------------+--------------+--------------+--------------+--------------+--------------+---------------|                    |--------------+--------------+--------------+--------------+--------------+--------------+--------------|
-                                                                  TD(TD_LALT_EH),LT(L2,KC_QUOTE),LGUI_T(KC_SPC),                    LCTL_T(KC_SPC),LT(L1,KC_BACKSLASH),TD(TD_LALT_RALT)
+                                                                 TD(TD_LALT_RALT),LT(L2,KC_QUOTE),LGUI_T(KC_SPC),                     LCTL_T(KC_SPC),LSA_T(KC_BACKSLASH),   KC_MEH
                                                                 //`---------------------------------------------'                    `--------------------------------------------'
   ),
 
