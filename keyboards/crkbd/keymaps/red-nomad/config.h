@@ -38,6 +38,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define MOUSEKEY_WHEEL_TIME_TO_MAX   80
 #define TAPPING_TOGGLE  1
 #define TAPPING_TERM    180
+#define DYNAMIC_MACRO_SIZE  64
 
 #ifdef RGBLIGHT_ENABLE
     #define RGBLIGHT_EFFECT_BREATHING
