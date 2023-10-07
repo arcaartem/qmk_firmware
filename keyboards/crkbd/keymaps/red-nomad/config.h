@@ -51,10 +51,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     #define RGBLIGHT_EFFECT_RGB_TEST
     #define RGBLIGHT_EFFECT_ALTERNATING
     #define RGBLIGHT_EFFECT_TWINKLE
-    #define RGBLIGHT_LIMIT_VAL 120
-    #define RGBLIGHT_HUE_STEP 10
-    #define RGBLIGHT_SAT_STEP 17
-    #define RGBLIGHT_VAL_STEP 17
+    #define RGBLIGHT_LIMIT_VAL 128
+    #define RGBLIGHT_HUE_STEP 4
+    #define RGBLIGHT_SAT_STEP 4
+    #define RGBLIGHT_VAL_STEP 4
 #endif
 
 #if defined(RGB_MATRIX_ENABLE)
@@ -65,7 +65,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #    define RGB_MATRIX_KEYPRESSES // reacts to keypresses
 #    define RGB_MATRIX_MAXIMUM_BRIGHTNESS 120  // limits maximum brightness of LEDs to 120 out of 255. If not defined maximum brightness is set to 255
 #    define RGB_DISABLE_WHEN_USB_SUSPENDED true // turn off effects when suspended
-#    define RGB_MATRIX_FRAMEBUFFER_EFFECTS
+#     undef RGB_MATRIX_FRAMEBUFFER_EFFECTS
 #    define RGB_MATRIX_HUE_STEP 4
 #    define RGB_MATRIX_SAT_STEP 4
 #    define RGB_MATRIX_VAL_STEP 4
@@ -98,7 +98,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #   undef ENABLE_RGB_MATRIX_PIXEL_FLOW
 #   undef ENABLE_RGB_MATRIX_PIXEL_FRACTAL
 #   undef ENABLE_RGB_MATRIX_PIXEL_RAIN
-#   undef ENABLE_RGB_MATRIX_RAINBOW_BEACON
+# define ENABLE_RGB_MATRIX_RAINBOW_BEACON
 #   undef ENABLE_RGB_MATRIX_RAINBOW_MOVING_CHEVRON
 #   undef ENABLE_RGB_MATRIX_RAINBOW_PINWHEELS
 #   undef ENABLE_RGB_MATRIX_RAINDROPS
