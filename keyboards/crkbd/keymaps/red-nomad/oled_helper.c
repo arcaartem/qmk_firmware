@@ -30,7 +30,7 @@ void raw_hid_receive(uint8_t *data, uint8_t length) {
     if (is_oled_on()) {
         uint8_t buffer_select = data[0];
         uint8_t data_length = data[1];
-        dprintf("raw_hid_receive - buffer_select: %d, data_lenght: %d, length: %d\n", buffer_select, data_length, length);
+        dprintf("raw_hid_receive-buffer_select:%d,data_lenght:%d,length: %d\n", buffer_select, data_length, length);
         if (buffer_select > 1 || data_length > 29) {
             return;
         }
@@ -54,6 +54,7 @@ void oled_render_layer_state(void) {
         case 0:
         case L_BASE:
         case L_BASE_ALT:
+        case L_BASE_ALT2:
             oled_write_P(PSTR("BASE "), true);
             break;
         case L_LOWER:
@@ -77,7 +78,9 @@ void oled_render_layer_state(void) {
     }
 
     if (layer_state & L_BASE_ALT)
-        oled_write_ln_P(PSTR(" (*)"), false);
+        oled_write_ln_P(PSTR(" (A)"), false);
+    else if (layer_state & L_BASE_ALT2)
+        oled_write_ln_P(PSTR(" (B)"), false);
     else
         oled_write_ln_P(PSTR(""), false);
 
@@ -143,21 +146,21 @@ void oled_render_keylog(void) {
     oled_write(keylog_str, false);
 }
 
-void oled_render_hid_buffer(uint8_t buffer) {
-    uint8_t length = hid_buffer_lengths[buffer];
-    /* dprintf("oled_render_hid_buffer - buffer: %d, length: %d\n", buffer, length); */
-    if (length > 0) {
-        for (uint8_t i=0; i<length; i++) {
-            oled_write_char((char)hid_buffers[buffer][i], false);
-        }
-    }
-}
+// void oled_render_hid_buffer(uint8_t buffer) {
+//     uint8_t length = hid_buffer_lengths[buffer];
+//     /* dprintf("oled_render_hid_buffer - buffer: %d, length: %d\n", buffer, length); */
+//     if (length > 0) {
+//         for (uint8_t i=0; i<length; i++) {
+//             oled_write_char((char)hid_buffers[buffer][i], false);
+//         }
+//     }
+// }
 
-void oled_render_hid_message(void) {
-    oled_render_hid_buffer(0);
-    oled_write_ln_P(PSTR(""), false);
-    oled_render_hid_buffer(1);
-}
+// void oled_render_hid_message(void) {
+//     oled_render_hid_buffer(0);
+//     oled_write_ln_P(PSTR(""), false);
+//     oled_render_hid_buffer(1);
+// }
 
 void oled_render_custom_logo(void) {
     static const char PROGMEM crkbd_logo[] = {
@@ -187,7 +190,7 @@ bool oled_task_user(void) {
     if (is_keyboard_master()) {
         oled_render_layer_mod_host_state();
         oled_render_keylog();
-        oled_render_hid_message();
+        // oled_render_hid_message();
     } else {
         oled_render_custom_logo();
     }
