@@ -25,7 +25,8 @@ enum {
     TD_LALT_RALT,
     TD_RALT_MEH,
     TD_RALT_GUI,
-    TD_LSFT_HYPR
+    TD_LSFT_HYPR,
+    TD_RSFT_RGUI
 };
 
 td_state_t cur_dance(tap_dance_state_t *state);
